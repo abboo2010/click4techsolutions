@@ -1,0 +1,75 @@
+{
+  "hero": {
+    "eyebrow": "Touch-Screen & Web Solutions",
+    "headline_before": "Software that runs",
+    "headline_highlight": "your",
+    "headline_after": "business.",
+    "lede": "From touch-kiosk apps and multilingual PWAs to the booking systems and dashboards behind them — we build the technology that Sabah businesses put in front of real customers, every day.",
+    "cta_primary_text": "Get Started Today",
+    "cta_secondary_text": "Explore Services",
+    "stat1_value": "4",
+    "stat1_suffix": "+",
+    "stat1_label": "Live deployments",
+    "stat2_value": "3",
+    "stat2_suffix": "",
+    "stat2_label": "Languages built-in",
+    "stat3_value": "100",
+    "stat3_suffix": "%",
+    "stat3_label": "Custom-built CMS"
+  },
+  "contact_info": {
+    "phone_display": "+6 012-330 1209",
+    "phone_href": "+60123301209",
+    "email": "info@click4techsolutions.com",
+    "address": "5F, The G Building, Bundusan Commercial Centre, Off Jalan Bundusan, Penampang, 88300 Kota Kinabalu, Sabah",
+    "whatsapp_link": "https://wa.me/60123301209",
+    "footer_text": "Click4Tech Solutions — IT solutions built around Sabah, one screen at a time."
+  },
+  "clients": [
+    { "sort_order": 0, "name": "Dr. Chandran Nadarajan", "logo_file": "dr-chandran-nadarajan.png" },
+    { "sort_order": 1, "name": "Begas Energy Sdn. Bhd.", "logo_file": "begas-energy-sdn-bhd.png" },
+    { "sort_order": 2, "name": "CY Wong Green Energy Sdn. Bhd.", "logo_file": "cy-wong-green-energy-sdn-bhd.png" },
+    { "sort_order": 3, "name": "Datuk. Dr. R. Krishnan", "logo_file": "datuk-dr-r-krishnan.png" },
+    { "sort_order": 4, "name": "Dr. Dharmalingam", "logo_file": "dr-dharmalingam.png" },
+    { "sort_order": 5, "name": "Asia-Track", "logo_file": "asia-track.png" },
+    { "sort_order": 6, "name": "STS", "logo_file": "sts.png" }
+  ],
+  "services": [
+    { "sort_order": 0, "group_name": "core", "icon_key": "kiosk", "title": "Touch-Screen Kiosk Apps", "kicker": "Built for the wall, not just the browser", "description": "Wall-mounted and countertop directories, menus and info screens built to run for months without a reboot." },
+    { "sort_order": 1, "group_name": "core", "icon_key": "pwa", "title": "Multilingual PWAs", "kicker": "One build, every visitor", "description": "Installable web apps in English, Bahasa Malaysia and Tamil, so every customer reads it in their own language." },
+    { "sort_order": 2, "group_name": "core", "icon_key": "booking", "title": "Booking & Registration", "kicker": "No double-bookings, ever", "description": "Sponsorships, event slots and appointments with race-condition-safe availability, not just a form." },
+    { "sort_order": 3, "group_name": "core", "icon_key": "dashboard", "title": "Admin Dashboards & CMS", "kicker": "Edit it yourself, live", "description": "Your team edits content, schedules and prices from a browser — changes go live with no redeploy." },
+    { "sort_order": 4, "group_name": "core", "icon_key": "app", "title": "Native iOS & Android Apps", "kicker": "Off the browser entirely", "description": "For businesses ready to move off the browser, with the same content and CMS underneath." },
+    { "sort_order": 5, "group_name": "core", "icon_key": "whatsapp", "title": "WhatsApp Automation", "kicker": "Where your customers already are", "description": "FAQ and lead-capture bots on WhatsApp and inside your app, wired to the same content your kiosk runs." },
+    { "sort_order": 6, "group_name": "digital", "icon_key": "web", "title": "Full-Stack Web Solutions", "kicker": "Front to back, one team", "description": "Custom websites and web applications built end-to-end — database, backend logic and a polished, responsive front end, all from one place." },
+    { "sort_order": 7, "group_name": "digital", "icon_key": "email", "title": "Professional Business Email", "kicker": "Look credible from your own domain", "description": "Branded @yourbusiness email accounts set up and managed for your team, so every message you send builds trust in your brand." },
+    { "sort_order": 8, "group_name": "digital", "icon_key": "support", "title": "Managed IT Support", "kicker": "Help before it becomes downtime", "description": "Ongoing technical support and maintenance for your systems, so small issues get resolved before they interrupt your business." },
+    { "sort_order": 9, "group_name": "digital", "icon_key": "social", "title": "Social Media Management", "kicker": "Consistent, on-brand and on schedule", "description": "Content planning, scheduling and posting across your social channels, so your online presence stays active without taking your time." },
+    { "sort_order": 10, "group_name": "digital", "icon_key": "hosting", "title": "Hosting & Server Solutions", "kicker": "Reliable infrastructure, handled for you", "description": "Web hosting and server setup configured and monitored for uptime and performance, so your site or app stays available." },
+    { "sort_order": 11, "group_name": "digital", "icon_key": "iot", "title": "IoT & Smart Technology", "kicker": "Connected devices, real data", "description": "Sensor and smart-device integration for businesses that need connected, data-driven touchpoints beyond a standard screen." }
+  ],
+  "why_cards": [
+    { "sort_order": 0, "icon_key": "shield", "title": "Built to Last", "description": "Kiosks that run for months without a reboot, monitored infrastructure behind every launch." },
+    { "sort_order": 1, "icon_key": "bolt", "title": "Fast to Launch", "description": "Content mapped from what you already have — no waiting on a blank-page rebuild." },
+    { "sort_order": 2, "icon_key": "control", "title": "You Stay in Control", "description": "A real admin login for your team — no calling us for a price or schedule change." },
+    { "sort_order": 3, "icon_key": "local", "title": "Local Support", "description": "Sabah-based — we build for the businesses around us, and answer the phone." }
+  ],
+  "work_items": [
+    { "sort_order": 0, "title": "Sri Subramaniar Alayam Temple", "status": "Live", "description": "A multilingual kiosk & web app for a Lok Kawi temple — full 2026 pooja calendar, event listings, and an Annual Prayers sponsorship system with per-slot Ubayakarar and Annathanam registration.", "bullets": ["Race-condition-safe slot booking (Postgres row-locking)", "10-section browser CMS across content, gallery, membership"], "domain": "srisubramaniarlokkawi.org" },
+    { "sort_order": 1, "title": "MediTouch — Dr. Chandran Nadarajan", "status": "Live", "description": "A patient-education kiosk and PWA for a private clinic, with a FAQ chatbot that captures leads and hands off to WhatsApp when it doesn't know the answer.", "bullets": ["Multi-user CMS with per-section login permissions", "FAQ chatbot with WhatsApp click-to-chat fallback"], "domain": "chandranir.info" },
+    { "sort_order": 2, "title": "ITCC Penampang Mall Directory", "status": "Live", "description": "An animated touch-screen floor directory for a commercial shopping mall — the full store list is editable straight from a spreadsheet, no code changes needed.", "bullets": ["Store list managed from an Excel sheet", "Animated wayfinding for a wall-mounted display"], "domain": "ITCC Penampang Commercial Shopping Mall" },
+    { "sort_order": 3, "title": "KDM H2O Park", "status": "Live", "description": "A touch-screen kiosk for a Tanjung Aru water park, rebuilt from the park's own site so on-site visitors get the same information without needing their phone.", "bullets": ["Rebuilt the park's site into an on-site touch experience", "No phone, signal or app-store install needed"], "domain": "kdmh2opark.com" }
+  ],
+  "pricing_factors": [
+    { "sort_order": 0, "title": "Content & languages", "description": "How much content you have and how many languages it needs — one language is a different scope to three." },
+    { "sort_order": 1, "title": "Kiosk vs. software-only", "description": "Physical hardware and an on-site install add time and cost that a web-only PWA doesn't need." },
+    { "sort_order": 2, "title": "Admin & integrations", "description": "A browser CMS is standard on every project; things like payment gateways or WhatsApp bots are scoped separately." }
+  ],
+  "faqs": [
+    { "sort_order": 0, "question": "How long does a kiosk or PWA project take?", "answer": "Most projects go from kickoff to a live, testable version in a few weeks, depending on how much content and how many languages are involved. We map your existing materials first, so there's no blank-page delay." },
+    { "sort_order": 1, "question": "Do you build in Bahasa Malaysia and Tamil too?", "answer": "Yes — every project we've shipped supports English alongside Bahasa Malaysia and/or Tamil or Chinese depending on the audience, built in from day one rather than added later." },
+    { "sort_order": 2, "question": "Can I edit the content myself after launch?", "answer": "Yes — that's the point of the CMS dashboard. No code, no waiting on us for small changes; you log in and edit content, schedules and pricing directly." },
+    { "sort_order": 3, "question": "What happens after launch?", "answer": "Every project ships with a browser-based admin so your team can update it directly. We also monitor the infrastructure it runs on and are on call for anything beyond day-to-day edits." },
+    { "sort_order": 4, "question": "Do you only build kiosks, or web apps too?", "answer": "Both, plus native iOS/Android apps and WhatsApp automation where it fits. The kiosk, the PWA and the admin dashboard are usually built from the same content, so nothing gets duplicated." }
+  ]
+}
