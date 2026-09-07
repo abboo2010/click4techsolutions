@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Client Support Login — Click4Tech Solutions</title>
+<style>
+  :root{
+    --bg:#FAF3E6; --card:#FFFFFF; --navy:#132A4E; --navy-soft:#3C577F;
+    --orange:#F07D1E; --orange-deep:#C6600F; --orange-tint:#FCE9D4;
+    --text-dim:#5C6B80; --line:rgba(19,42,78,0.14); --mint:#1F9D6F; --danger:#C6392F;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--navy);font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
+  a{color:var(--orange-deep);}
+  button{font-family:inherit;cursor:pointer;}
+  input,textarea,select{font-family:inherit;font-size:0.92rem;}
+
+  #wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:34px 32px;max-width:380px;width:100%;box-shadow:0 12px 30px rgba(19,42,78,0.08);}
+  .brand{display:flex;align-items:center;gap:8px;margin-bottom:18px;}
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--orange);}
+  .brand span{font-weight:800;font-size:0.95rem;color:var(--navy);}
+
+  .box h1{font-size:1.25rem;margin:0 0 4px;}
+  .box p.sub{color:var(--text-dim);font-size:0.85rem;margin:0 0 18px;}
+
+  .tabs{display:flex;gap:6px;margin-bottom:18px;background:var(--bg);border-radius:9px;padding:4px;}
+  .tabs button{flex:1;padding:8px;border:none;border-radius:6px;background:transparent;color:var(--navy-soft);font-weight:700;font-size:0.85rem;}
+  .tabs button.active{background:var(--card);color:var(--orange-deep);box-shadow:0 2px 6px rgba(19,42,78,0.08);}
+
+  .field{margin-bottom:12px;}
+  .field label{display:block;font-size:0.78rem;font-weight:700;color:var(--navy-soft);margin-bottom:5px;}
+  .field input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;}
+
+  .primary-btn{width:100%;padding:11px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--orange),var(--orange-deep));color:#fff;font-weight:700;font-size:0.95rem;margin-top:4px;}
+  .primary-btn:disabled{opacity:0.6;cursor:default;}
+
+  .msg{font-size:0.85rem;margin-top:12px;padding:10px 12px;border-radius:8px;display:none;}
+  .msg.error{background:rgba(198,57,47,0.09);color:var(--danger);display:block;}
+  .msg.success{background:rgba(31,157,111,0.1);color:var(--mint);display:block;}
+
+  .forgot-link{display:block;text-align:center;margin-top:14px;font-size:0.82rem;color:var(--navy-soft);text-decoration:none;}
+  .forgot-link:hover{color:var(--orange-deep);}
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .back-home{display:block;text-align:center;margin-top:18px;font-size:0.8rem;color:var(--text-dim);text-decoration:none;}
+  .back-home:hover{color:var(--orange-deep);}
+</style>
+</head>
+<body>
+
+<div id="wrap">
+  <div class="box">
+    <div class="brand"><span class="dot"></span><span>Click4Tech Solutions</span></div>
+    <h1>Client Support Portal</h1>
+    <p class="sub">Log in to submit and track your support tickets.</p>
+
+    <div class="tabs">
+      <button id="tabLoginBtn" class="active">Log In</button>
+      <button id="tabSignupBtn">Sign Up</button>
+    </div>
+
+    <!-- LOG IN -->
+    <div id="panelLogin" class="panel active">
+      <div class="field"><label>Email</label><input id="loginEmail" type="email" autocomplete="username" placeholder="you@company.com"></div>
+      <div class="field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+      <button class="primary-btn" id="loginBtn">Log In</button>
+      <div class="msg" id="loginMsg"></div>
+      <a class="forgot-link" id="forgotLink" href="#">Forgot your password?</a>
+    </div>
+
+    <!-- SIGN UP -->
+    <div id="panelSignup" class="panel">
+      <div class="field"><label>Full name</label><input id="suName" type="text" placeholder="Your name"></div>
+      <div class="field"><label>Company name (optional)</label><input id="suCompany" type="text" placeholder="Your company"></div>
+      <div class="field"><label>Email</label><input id="suEmail" type="email" autocomplete="username" placeholder="you@company.com"></div>
+      <div class="field"><label>Password</label><input id="suPassword" type="password" autocomplete="new-password" placeholder="At least 6 characters"></div>
+      <div class="field"><label>Confirm password</label><input id="suPassword2" type="password" autocomplete="new-password" placeholder="Repeat password"></div>
+      <button class="primary-btn" id="signupBtn">Create Account</button>
+      <div class="msg" id="signupMsg"></div>
+    </div>
+
+    <a class="back-home" href="/">&larr; Back to click4techsolutions.com</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="assets/support-config.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  var sb = window.supabase.createClient(window.C4T_SUPABASE_URL, window.C4T_SUPABASE_ANON_KEY);
+
+  // If already logged in, skip straight to the portal.
+  sb.auth.getSession().then(function(res){
+    if (res.data && res.data.session) window.location.href = 'support-portal.html';
+  });
+
+  var tabLoginBtn = document.getElementById('tabLoginBtn');
+  var tabSignupBtn = document.getElementById('tabSignupBtn');
+  var panelLogin = document.getElementById('panelLogin');
+  var panelSignup = document.getElementById('panelSignup');
+
+  tabLoginBtn.addEventListener('click', function(){
+    tabLoginBtn.classList.add('active'); tabSignupBtn.classList.remove('active');
+    panelLogin.classList.add('active'); panelSignup.classList.remove('active');
+  });
+  tabSignupBtn.addEventListener('click', function(){
+    tabSignupBtn.classList.add('active'); tabLoginBtn.classList.remove('active');
+    panelSignup.classList.add('active'); panelLogin.classList.remove('active');
+  });
+
+  function showMsg(el, text, isError){
+    el.textContent = text;
+    el.className = 'msg ' + (isError ? 'error' : 'success');
+  }
+
+  document.getElementById('loginBtn').addEventListener('click', function(){
+    var btn = this;
+    var email = document.getElementById('loginEmail').value.trim();
+    var password = document.getElementById('loginPassword').value;
+    var msgEl = document.getElementById('loginMsg');
+    msgEl.className = 'msg';
+    if (!email || !password) { showMsg(msgEl, 'Enter your email and password.', true); return; }
+
+    btn.disabled = true; btn.textContent = 'Logging in…';
+    sb.auth.signInWithPassword({ email: email, password: password }).then(function(res){
+      btn.disabled = false; btn.textContent = 'Log In';
+      if (res.error) { showMsg(msgEl, res.error.message, true); return; }
+      window.location.href = 'support-portal.html';
+    });
+  });
+
+  document.getElementById('signupBtn').addEventListener('click', function(){
+    var btn = this;
+    var name = document.getElementById('suName').value.trim();
+    var company = document.getElementById('suCompany').value.trim();
+    var email = document.getElementById('suEmail').value.trim();
+    var password = document.getElementById('suPassword').value;
+    var password2 = document.getElementById('suPassword2').value;
+    var msgEl = document.getElementById('signupMsg');
+    msgEl.className = 'msg';
+
+    if (!name || !email || !password) { showMsg(msgEl, 'Name, email, and password are required.', true); return; }
+    if (password.length < 6) { showMsg(msgEl, 'Password must be at least 6 characters.', true); return; }
+    if (password !== password2) { showMsg(msgEl, 'Passwords do not match.', true); return; }
+
+    btn.disabled = true; btn.textContent = 'Creating account…';
+    sb.auth.signUp({
+      email: email,
+      password: password,
+      options: { data: { full_name: name, company_name: company || null } }
+    }).then(function(res){
+      btn.disabled = false; btn.textContent = 'Create Account';
+      if (res.error) { showMsg(msgEl, res.error.message, true); return; }
+      if (res.data && res.data.session) {
+        // Email confirmation is off — the account is already active and logged in.
+        window.location.href = 'support-portal.html';
+        return;
+      }
+      showMsg(msgEl, 'Account created! Check your email to confirm your address, then log in.', false);
+    });
+  });
+
+  document.getElementById('forgotLink').addEventListener('click', function(e){
+    e.preventDefault();
+    var email = document.getElementById('loginEmail').value.trim();
+    var msgEl = document.getElementById('loginMsg');
+    if (!email) { showMsg(msgEl, 'Enter your email above first, then click "Forgot your password?" again.', true); return; }
+    sb.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/support-reset-password.html'
+    }).then(function(res){
+      if (res.error) { showMsg(msgEl, res.error.message, true); return; }
+      showMsg(msgEl, 'Password reset link sent — check your email.', false);
+    });
+  });
+})();
+</script>
+</body>
+</html>
