@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Click4Tech Solutions — CMS</title>
+<style>
+  :root{
+    --bg:#FAF3E6; --card:#FFFFFF; --navy:#132A4E; --navy-soft:#3C577F;
+    --orange:#F07D1E; --orange-deep:#C6600F; --orange-tint:#FCE9D4;
+    --text-dim:#5C6B80; --line:rgba(19,42,78,0.14); --mint:#1F9D6F; --danger:#C6392F;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--navy);font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
+  a{color:var(--orange-deep);}
+  button{font-family:inherit;cursor:pointer;}
+  input,textarea,select{font-family:inherit;font-size:0.92rem;}
+
+  /* ---------- login screen ---------- */
+  #loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .login-box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:36px 32px;max-width:360px;width:100%;box-shadow:0 12px 30px rgba(19,42,78,0.08);}
+  .login-box h1{font-size:1.3rem;margin:0 0 6px;}
+  .login-box p{color:var(--text-dim);font-size:0.88rem;margin:0 0 20px;}
+  .login-box input{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:8px;margin-bottom:12px;}
+  .login-box button{width:100%;padding:11px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--orange),var(--orange-deep));color:#fff;font-weight:700;font-size:0.95rem;}
+  .login-error{color:var(--danger);font-size:0.85rem;margin-top:8px;display:none;}
+
+  /* ---------- app shell ---------- */
+  #app{display:none;min-height:100vh;}
+  .topbar{position:sticky;top:0;z-index:10;background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  .topbar h1{font-size:1.05rem;margin:0;font-weight:700;}
+  .topbar .sub{font-size:0.78rem;color:rgba(255,255,255,0.65);}
+  .logout-btn{background:transparent;border:1px solid rgba(255,255,255,0.3);color:#fff;padding:7px 14px;border-radius:7px;font-size:0.82rem;}
+  .logout-btn:hover{background:rgba(255,255,255,0.1);}
+
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;padding:14px 20px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:56px;z-index:9;}
+  .tab-btn{padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--navy-soft);font-size:0.84rem;font-weight:600;}
+  .tab-btn.active{background:var(--orange-tint);border-color:var(--orange);color:var(--orange-deep);}
+
+  main{max-width:920px;margin:0 auto;padding:24px 20px 80px;}
+  .panel{display:none;}
+  .panel.active{display:block;}
+  .panel-head{margin-bottom:16px;}
+  .panel-head h2{margin:0 0 4px;font-size:1.2rem;}
+  .panel-head p{margin:0;color:var(--text-dim);font-size:0.88rem;}
+
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:8px;font-size:0.85rem;opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:100;}
+  .toast.show{opacity:1;}
+  .toast.error{background:var(--danger);}
+
+  /* singleton form */
+  .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;}
+  .field-grid.narrow{grid-template-columns:1fr;}
+  .field{display:flex;flex-direction:column;gap:5px;}
+  .field.full{grid-column:1/-1;}
+  .field label{font-size:0.8rem;font-weight:700;color:var(--navy-soft);}
+  .field input,.field textarea,.field select{padding:9px 11px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--navy);}
+  .field textarea{resize:vertical;min-height:70px;}
+  .save-row{margin-top:16px;display:flex;justify-content:flex-end;}
+  .btn{padding:9px 18px;border-radius:8px;border:none;font-weight:700;font-size:0.85rem;}
+  .btn-primary{background:linear-gradient(135deg,var(--orange),var(--orange-deep));color:#fff;}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--navy-soft);}
+  .btn-danger{background:transparent;border:1px solid var(--danger);color:var(--danger);}
+  .btn-sm{padding:6px 11px;font-size:0.78rem;}
+
+  /* list editor */
+  .list-add-row{margin-bottom:14px;}
+  .item-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px;}
+  .item-card.unpublished{opacity:0.55;}
+  .item-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
+  .item-top .badges{display:flex;gap:6px;align-items:center;}
+  .badge{font-size:0.7rem;padding:2px 8px;border-radius:20px;background:var(--orange-tint);color:var(--orange-deep);font-weight:700;}
+  .badge.off{background:var(--line);color:var(--text-dim);}
+  .item-actions{display:flex;gap:6px;flex-wrap:wrap;}
+  .move-btns{display:flex;gap:3px;}
+  .move-btns button{width:26px;height:26px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--navy-soft);}
+
+  .logo-preview{width:52px;height:52px;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:#fff;padding:4px;}
+  .upload-row{display:flex;align-items:center;gap:10px;}
+
+  .bullets-list{display:flex;flex-direction:column;gap:6px;}
+  .bullet-row{display:flex;gap:6px;}
+  .bullet-row input{flex:1;}
+  .bullet-row button{flex-shrink:0;}
+
+  @media (max-width:640px){
+    .field-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>Click4Tech CMS</h1>
+    <p>Enter the admin password to manage the site's content.</p>
+    <input id="passwordInput" type="password" placeholder="Admin password" autocomplete="current-password">
+    <button id="loginBtn">Log In</button>
+    <div class="login-error" id="loginError">Wrong password. Try again.</div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="topbar">
+    <div>
+      <h1>Click4Tech Solutions — CMS</h1>
+      <div class="sub">Editing the live homepage at click4techsolutions.com</div>
+    </div>
+    <button class="logout-btn" id="logoutBtn">Log Out</button>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <main id="panels"></main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  'use strict';
+
+  var API = '/.netlify/functions/cms-crud';
+  var UPLOAD_API = '/.netlify/functions/cms-upload-image';
+  var PASSWORD_KEY = 'c4t_cms_pw';
+
+  // ---------------------------------------------------------------------
+  // Config: every CMS-managed section, driving the generic engine below.
+  // ---------------------------------------------------------------------
+  var ICON_OPTIONS = ['kiosk','pwa','booking','dashboard','app','whatsapp','web','email','support','social','hosting','iot','shield','bolt','control','local'];
+
+  var SECTIONS = [
+    {
+      key: 'hero_banner', label: 'Hero Banner', type: 'singleton',
+      fields: [
+        {key:'eyebrow', label:'Eyebrow tag', type:'text'},
+        {key:'headline_before', label:'Headline — before highlighted word', type:'text'},
+        {key:'headline_highlight', label:'Headline — highlighted word', type:'text'},
+        {key:'headline_after', label:'Headline — after highlighted word', type:'text'},
+        {key:'lede', label:'Subheading paragraph', type:'textarea', full:true},
+        {key:'cta_primary_text', label:'Primary button text', type:'text'},
+        {key:'cta_secondary_text', label:'Secondary button text', type:'text'},
+        {key:'stat1_value', label:'Stat 1 — value', type:'text'},
+        {key:'stat1_suffix', label:'Stat 1 — suffix (e.g. +, %)', type:'text'},
+        {key:'stat1_label', label:'Stat 1 — label', type:'text'},
+        {key:'stat2_value', label:'Stat 2 — value', type:'text'},
+        {key:'stat2_suffix', label:'Stat 2 — suffix', type:'text'},
+        {key:'stat2_label', label:'Stat 2 — label', type:'text'},
+        {key:'stat3_value', label:'Stat 3 — value', type:'text'},
+        {key:'stat3_suffix', label:'Stat 3 — suffix', type:'text'},
+        {key:'stat3_label', label:'Stat 3 — label', type:'text'}
+      ]
+    },
+    {
+      key: 'clients', label: 'Clients', type: 'list', itemTitleField: 'name',
+      fields: [
+        {key:'name', label:'Client name', type:'text'},
+        {key:'logo_url', label:'Logo', type:'image', folder:'clients'}
+      ]
+    },
+    {
+      key: 'services', label: 'Services', type: 'list', itemTitleField: 'title',
+      fields: [
+        {key:'group_name', label:'Group', type:'select', options:[{value:'core',label:'Core Services'},{value:'digital',label:'Core IT & Digital Services'}]},
+        {key:'icon_key', label:'Icon', type:'select', options: ICON_OPTIONS.map(function(k){return {value:k,label:k};})},
+        {key:'title', label:'Title', type:'text'},
+        {key:'kicker', label:'Kicker line', type:'text'},
+        {key:'description', label:'Description', type:'textarea', full:true}
+      ]
+    },
+    {
+      key: 'why_cards', label: 'Why Choose Us', type: 'list', itemTitleField: 'title',
+      fields: [
+        {key:'icon_key', label:'Icon', type:'select', options: ICON_OPTIONS.map(function(k){return {value:k,label:k};})},
+        {key:'title', label:'Title', type:'text'},
+        {key:'description', label:'Description', type:'textarea', full:true}
+      ]
+    },
+    {
+      key: 'work_items', label: 'Our Work', type: 'list', itemTitleField: 'title',
+      fields: [
+        {key:'title', label:'Project title', type:'text'},
+        {key:'status', label:'Status tag (e.g. Live)', type:'text'},
+        {key:'description', label:'Description', type:'textarea', full:true},
+        {key:'bullets', label:'Bullet points', type:'bullets', full:true},
+        {key:'domain', label:'Domain / location label', type:'text'}
+      ]
+    },
+    {
+      key: 'pricing_factors', label: 'Pricing Factors', type: 'list', itemTitleField: 'title',
+      fields: [
+        {key:'title', label:'Title', type:'text'},
+        {key:'description', label:'Description', type:'textarea', full:true}
+      ]
+    },
+    {
+      key: 'faqs', label: 'FAQs', type: 'list', itemTitleField: 'question',
+      fields: [
+        {key:'question', label:'Question', type:'text'},
+        {key:'answer', label:'Answer', type:'textarea', full:true}
+      ]
+    },
+    {
+      key: 'contact_info', label: 'Contact Info', type: 'singleton',
+      fields: [
+        {key:'phone_display', label:'Phone (displayed)', type:'text'},
+        {key:'phone_href', label:'Phone (for tel: link, digits only, e.g. 60123301209)', type:'text'},
+        {key:'email', label:'Email address', type:'text'},
+        {key:'address', label:'Office address', type:'textarea', full:true},
+        {key:'whatsapp_link', label:'WhatsApp chat link (https://wa.me/...)', type:'text'},
+        {key:'footer_text', label:'Footer tagline', type:'text'}
+      ]
+    }
+  ];
+
+  // ---------------------------------------------------------------------
+  // Auth
+  // ---------------------------------------------------------------------
+  function getPassword(){ return sessionStorage.getItem(PASSWORD_KEY) || ''; }
+
+  function authHeaders(){
+    var h = {'Content-Type':'application/json'};
+    h['x-admin-password'] = getPassword();
+    return h;
+  }
+
+  document.getElementById('loginBtn').addEventListener('click', doLogin);
+  document.getElementById('passwordInput').addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
+
+  function doLogin(){
+    var pw = document.getElementById('passwordInput').value;
+    fetch(API + '?action=login', {headers:{'x-admin-password':pw}})
+      .then(function(r){
+        if(r.ok){
+          sessionStorage.setItem(PASSWORD_KEY, pw);
+          document.getElementById('loginError').style.display = 'none';
+          showApp();
+        } else {
+          document.getElementById('loginError').style.display = 'block';
+        }
+      })
+      .catch(function(){ document.getElementById('loginError').style.display = 'block'; });
+  }
+
+  document.getElementById('logoutBtn').addEventListener('click', function(){
+    sessionStorage.removeItem(PASSWORD_KEY);
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+  });
+
+  function showApp(){
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    buildTabs();
+    selectTab(SECTIONS[0].key);
+  }
+
+  // If a password is already stored this tab session, skip straight to the app
+  // (but still verify it's still correct).
+  if(getPassword()){
+    fetch(API + '?action=login', {headers:{'x-admin-password':getPassword()}})
+      .then(function(r){ if(r.ok) showApp(); });
+  }
+
+  // ---------------------------------------------------------------------
+  // Tabs
+  // ---------------------------------------------------------------------
+  function buildTabs(){
+    var tabsEl = document.getElementById('tabs');
+    var panelsEl = document.getElementById('panels');
+    tabsEl.innerHTML = '';
+    panelsEl.innerHTML = '';
+    SECTIONS.forEach(function(sec){
+      var btn = document.createElement('button');
+      btn.className = 'tab-btn';
+      btn.textContent = sec.label;
+      btn.dataset.key = sec.key;
+      btn.addEventListener('click', function(){ selectTab(sec.key); });
+      tabsEl.appendChild(btn);
+
+      var panel = document.createElement('div');
+      panel.className = 'panel';
+      panel.id = 'panel-' + sec.key;
+      panelsEl.appendChild(panel);
+    });
+  }
+
+  function selectTab(key){
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.key === key); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id === 'panel-' + key); });
+    var sec = SECTIONS.filter(function(s){ return s.key === key; })[0];
+    if(!sec) return;
+    if(sec.type === 'singleton') loadSingleton(sec);
+    else loadList(sec);
+  }
+
+  // ---------------------------------------------------------------------
+  // Toast
+  // ---------------------------------------------------------------------
+  var toastTimer = null;
+  function toast(msg, isError){
+    var el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast show' + (isError ? ' error' : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ el.className = 'toast'; }, 2600);
+  }
+
+  // ---------------------------------------------------------------------
+  // Image upload helper: resizes/compresses in the browser via canvas,
+  // then uploads the resulting base64 PNG/JPEG to cms-upload-image.js.
+  // ---------------------------------------------------------------------
+  function resizeAndUpload(file, folder, cb){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var img = new Image();
+      img.onload = function(){
+        var maxDim = 900;
+        var w = img.width, h = img.height;
+        if(w > maxDim || h > maxDim){
+          if(w > h){ h = Math.round(h * maxDim / w); w = maxDim; }
+          else { w = Math.round(w * maxDim / h); h = maxDim; }
+        }
+        var canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        var isPngSource = /image\/png/.test(file.type) || /image\/svg/.test(file.type);
+        var dataUrl = isPngSource ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', 0.86);
+
+        fetch(UPLOAD_API, {
+          method:'POST',
+          headers: authHeaders(),
+          body: JSON.stringify({dataUrl: dataUrl, folder: folder})
+        }).then(function(r){ return r.json(); }).then(function(data){
+          if(data.url) cb(null, data.url);
+          else cb(data.error || 'Upload failed');
+        }).catch(function(err){ cb(String(err)); });
+      };
+      img.onerror = function(){ cb('Could not read image'); };
+      img.src = e.target.result;
+    };
+    reader.onerror = function(){ cb('Could not read file'); };
+    reader.readAsDataURL(file);
+  }
+
+  // ---------------------------------------------------------------------
+  // Singleton form renderer (Hero Banner, Contact Info)
+  // ---------------------------------------------------------------------
+  function loadSingleton(sec){
+    var panel = document.getElementById('panel-' + sec.key);
+    panel.innerHTML = '<div class="panel-head"><h2>'+sec.label+'</h2></div><p>Loading…</p>';
+    fetch(API + '?table=' + sec.key, {headers: authHeaders()})
+      .then(function(r){ return r.json(); })
+      .then(function(data){ renderSingletonForm(sec, panel, data || {}); })
+      .catch(function(){ panel.innerHTML = '<p>Failed to load.</p>'; });
+  }
+
+  function renderSingletonForm(sec, panel, data){
+    panel.innerHTML = '';
+    var head = document.createElement('div');
+    head.className = 'panel-head';
+    head.innerHTML = '<h2>'+sec.label+'</h2><p>Changes go live on the site within about a minute of saving.</p>';
+    panel.appendChild(head);
+
+    var grid = document.createElement('div');
+    grid.className = 'field-grid';
+    var inputs = {};
+
+    sec.fields.forEach(function(f){
+      var wrap = document.createElement('div');
+      wrap.className = 'field' + (f.full ? ' full' : '');
+      var label = document.createElement('label');
+      label.textContent = f.label;
+      wrap.appendChild(label);
+      var input = f.type === 'textarea' ? document.createElement('textarea') : document.createElement('input');
+      if(f.type !== 'textarea') input.type = 'text';
+      input.value = data[f.key] || '';
+      wrap.appendChild(input);
+      grid.appendChild(wrap);
+      inputs[f.key] = input;
+    });
+    panel.appendChild(grid);
+
+    var saveRow = document.createElement('div');
+    saveRow.className = 'save-row';
+    var saveBtn = document.createElement('button');
+    saveBtn.className = 'btn btn-primary';
+    saveBtn.textContent = 'Save Changes';
+    saveBtn.addEventListener('click', function(){
+      var payload = {};
+      sec.fields.forEach(function(f){ payload[f.key] = inputs[f.key].value; });
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving…';
+      fetch(API + '?table=' + sec.key, {method:'PUT', headers: authHeaders(), body: JSON.stringify(payload)})
+        .then(function(r){ if(!r.ok) throw new Error('save failed'); return r.json(); })
+        .then(function(){ toast('Saved'); saveBtn.disabled = false; saveBtn.textContent = 'Save Changes'; })
+        .catch(function(){ toast('Save failed', true); saveBtn.disabled = false; saveBtn.textContent = 'Save Changes'; });
+    });
+    saveRow.appendChild(saveBtn);
+    panel.appendChild(saveRow);
+  }
+
+  // ---------------------------------------------------------------------
+  // List editor (Clients, Services, Why Cards, Work Items, Pricing, FAQs)
+  // ---------------------------------------------------------------------
+  function loadList(sec){
+    var panel = document.getElementById('panel-' + sec.key);
+    panel.innerHTML = '<div class="panel-head"><h2>'+sec.label+'</h2></div><p>Loading…</p>';
+    fetch(API + '?table=' + sec.key, {headers: authHeaders()})
+      .then(function(r){ return r.json(); })
+      .then(function(rows){ renderListEditor(sec, panel, rows || []); })
+      .catch(function(){ panel.innerHTML = '<p>Failed to load.</p>'; });
+  }
+
+  function blankRow(sec){
+    var row = {};
+    sec.fields.forEach(function(f){ row[f.key] = f.type === 'bullets' ? [] : (f.type === 'select' ? f.options[0].value : ''); });
+    row.is_published = true;
+    return row;
+  }
+
+  function renderListEditor(sec, panel, rows){
+    panel.innerHTML = '';
+    var head = document.createElement('div');
+    head.className = 'panel-head';
+    head.innerHTML = '<h2>'+sec.label+'</h2><p>Drag order with the arrows. Hidden items stay saved but won\'t show on the site.</p>';
+    panel.appendChild(head);
+
+    var addRow = document.createElement('div');
+    addRow.className = 'list-add-row';
+    var addBtn = document.createElement('button');
+    addBtn.className = 'btn btn-primary btn-sm';
+    addBtn.textContent = '+ Add ' + sec.label.replace(/s$/, '');
+    addBtn.addEventListener('click', function(){
+      createItem(sec, blankRow(sec), function(){ loadList(sec); });
+    });
+    addRow.appendChild(addBtn);
+    panel.appendChild(addRow);
+
+    var list = document.createElement('div');
+    list.id = 'list-' + sec.key;
+    panel.appendChild(list);
+
+    rows.forEach(function(row, idx){
+      list.appendChild(buildItemCard(sec, row, rows, idx));
+    });
+
+    if(rows.length === 0){
+      var empty = document.createElement('p');
+      empty.style.color = 'var(--text-dim)';
+      empty.textContent = 'Nothing here yet — click "Add" above.';
+      list.appendChild(empty);
+    }
+  }
+
+  function createItem(sec, payload, cb){
+    fetch(API + '?table=' + sec.key, {method:'POST', headers: authHeaders(), body: JSON.stringify(payload)})
+      .then(function(r){ if(!r.ok) throw new Error('create failed'); return r.json(); })
+      .then(function(){ toast('Added'); cb(); })
+      .catch(function(){ toast('Could not add', true); });
+  }
+
+  function buildItemCard(sec, row, allRows, idx){
+    var card = document.createElement('div');
+    card.className = 'item-card' + (row.is_published === false ? ' unpublished' : '');
+
+    var top = document.createElement('div');
+    top.className = 'item-top';
+
+    var titleEl = document.createElement('strong');
+    titleEl.textContent = row[sec.itemTitleField] || '(untitled)';
+    top.appendChild(titleEl);
+
+    var actions = document.createElement('div');
+    actions.className = 'item-actions';
+
+    var moveWrap = document.createElement('div');
+    moveWrap.className = 'move-btns';
+    var upBtn = document.createElement('button'); upBtn.textContent = '↑'; upBtn.title = 'Move up';
+    var downBtn = document.createElement('button'); downBtn.textContent = '↓'; downBtn.title = 'Move down';
+    upBtn.disabled = idx === 0;
+    downBtn.disabled = idx === allRows.length - 1;
+    upBtn.addEventListener('click', function(){ reorder(sec, allRows, idx, idx - 1); });
+    downBtn.addEventListener('click', function(){ reorder(sec, allRows, idx, idx + 1); });
+    moveWrap.appendChild(upBtn); moveWrap.appendChild(downBtn);
+    actions.appendChild(moveWrap);
+
+    var visBtn = document.createElement('button');
+    visBtn.className = 'btn btn-ghost btn-sm';
+    visBtn.textContent = row.is_published === false ? 'Show on site' : 'Hide from site';
+    visBtn.addEventListener('click', function(){
+      updateItem(sec, row.id, {is_published: !(row.is_published !== false)}, function(){ loadList(sec); });
+    });
+    actions.appendChild(visBtn);
+
+    var delBtn = document.createElement('button');
+    delBtn.className = 'btn btn-danger btn-sm';
+    delBtn.textContent = 'Delete';
+    delBtn.addEventListener('click', function(){
+      if(!confirm('Delete "' + (row[sec.itemTitleField] || 'this item') + '"? This cannot be undone.')) return;
+      fetch(API + '?table=' + sec.key + '&id=' + encodeURIComponent(row.id), {method:'DELETE', headers: authHeaders()})
+        .then(function(r){ if(!r.ok) throw new Error('delete failed'); })
+        .then(function(){ toast('Deleted'); loadList(sec); })
+        .catch(function(){ toast('Could not delete', true); });
+    });
+    actions.appendChild(delBtn);
+
+    top.appendChild(actions);
+    card.appendChild(top);
+
+    var grid = document.createElement('div');
+    grid.className = 'field-grid narrow';
+    var inputs = {};
+
+    sec.fields.forEach(function(f){
+      var wrap = document.createElement('div');
+      wrap.className = 'field' + (f.full ? ' full' : '');
+      var label = document.createElement('label');
+      label.textContent = f.label;
+      wrap.appendChild(label);
+
+      if(f.type === 'select'){
+        var sel = document.createElement('select');
+        f.options.forEach(function(o){
+          var opt = document.createElement('option');
+          opt.value = o.value; opt.textContent = o.label;
+          if(row[f.key] === o.value) opt.selected = true;
+          sel.appendChild(opt);
+        });
+        wrap.appendChild(sel);
+        inputs[f.key] = sel;
+      } else if(f.type === 'textarea'){
+        var ta = document.createElement('textarea');
+        ta.value = row[f.key] || '';
+        wrap.appendChild(ta);
+        inputs[f.key] = ta;
+      } else if(f.type === 'image'){
+        var uploadRow = document.createElement('div');
+        uploadRow.className = 'upload-row';
+        var img = document.createElement('img');
+        img.className = 'logo-preview';
+        img.src = row[f.key] || '';
+        img.style.visibility = row[f.key] ? 'visible' : 'hidden';
+        var fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/png,image/jpeg,image/webp,image/svg+xml,image/gif';
+        var hiddenVal = document.createElement('input');
+        hiddenVal.type = 'hidden';
+        hiddenVal.value = row[f.key] || '';
+        fileInput.addEventListener('change', function(){
+          if(!fileInput.files || !fileInput.files[0]) return;
+          resizeAndUpload(fileInput.files[0], f.folder || 'uploads', function(err, url){
+            if(err){ toast('Upload failed: ' + err, true); return; }
+            hiddenVal.value = url;
+            img.src = url;
+            img.style.visibility = 'visible';
+            toast('Image uploaded — click Save to apply');
+          });
+        });
+        uploadRow.appendChild(img);
+        uploadRow.appendChild(fileInput);
+        wrap.appendChild(uploadRow);
+        inputs[f.key] = hiddenVal;
+      } else if(f.type === 'bullets'){
+        var bulletsWrap = document.createElement('div');
+        bulletsWrap.className = 'bullets-list';
+        var bulletsArr = Array.isArray(row[f.key]) ? row[f.key].slice() : [];
+
+        function renderBullets(){
+          bulletsWrap.innerHTML = '';
+          bulletsArr.forEach(function(val, bi){
+            var br = document.createElement('div');
+            br.className = 'bullet-row';
+            var bi_input = document.createElement('input');
+            bi_input.type = 'text';
+            bi_input.value = val;
+            bi_input.addEventListener('input', function(){ bulletsArr[bi] = bi_input.value; });
+            var rm = document.createElement('button');
+            rm.className = 'btn btn-ghost btn-sm';
+            rm.textContent = '✕';
+            rm.addEventListener('click', function(){ bulletsArr.splice(bi, 1); renderBullets(); });
+            br.appendChild(bi_input); br.appendChild(rm);
+            bulletsWrap.appendChild(br);
+          });
+          var addB = document.createElement('button');
+          addB.className = 'btn btn-ghost btn-sm';
+          addB.textContent = '+ Add bullet';
+          addB.style.marginTop = '4px';
+          addB.addEventListener('click', function(){ bulletsArr.push(''); renderBullets(); });
+          bulletsWrap.appendChild(addB);
+        }
+        renderBullets();
+        wrap.appendChild(bulletsWrap);
+        inputs[f.key] = { get value(){ return JSON.stringify(bulletsArr.filter(function(v){ return v.trim() !== ''; })); } };
+      } else {
+        var inp = document.createElement('input');
+        inp.type = 'text';
+        inp.value = row[f.key] || '';
+        wrap.appendChild(inp);
+        inputs[f.key] = inp;
+      }
+
+      grid.appendChild(wrap);
+    });
+    card.appendChild(grid);
+
+    var saveRow = document.createElement('div');
+    saveRow.className = 'save-row';
+    var saveBtn = document.createElement('button');
+    saveBtn.className = 'btn btn-primary btn-sm';
+    saveBtn.textContent = 'Save';
+    saveBtn.addEventListener('click', function(){
+      var payload = {};
+      sec.fields.forEach(function(f){
+        if(f.type === 'bullets') payload[f.key] = JSON.parse(inputs[f.key].value);
+        else payload[f.key] = inputs[f.key].value;
+      });
+      saveBtn.disabled = true; saveBtn.textContent = 'Saving…';
+      updateItem(sec, row.id, payload, function(){
+        saveBtn.disabled = false; saveBtn.textContent = 'Save';
+        loadList(sec);
+      });
+    });
+    saveRow.appendChild(saveBtn);
+    card.appendChild(saveRow);
+
+    return card;
+  }
+
+  function updateItem(sec, id, payload, cb){
+    fetch(API + '?table=' + sec.key + '&id=' + encodeURIComponent(id), {method:'PUT', headers: authHeaders(), body: JSON.stringify(payload)})
+      .then(function(r){ if(!r.ok) throw new Error('update failed'); return r.json(); })
+      .then(function(){ toast('Saved'); cb(); })
+      .catch(function(){ toast('Save failed', true); cb(); });
+  }
+
+  function reorder(sec, allRows, fromIdx, toIdx){
+    var ids = allRows.map(function(r){ return r.id; });
+    var moved = ids.splice(fromIdx, 1)[0];
+    ids.splice(toIdx, 0, moved);
+    fetch(API + '?table=' + sec.key + '&action=reorder', {method:'POST', headers: authHeaders(), body: JSON.stringify({order: ids})})
+      .then(function(r){ if(!r.ok) throw new Error('reorder failed'); })
+      .then(function(){ loadList(sec); })
+      .catch(function(){ toast('Could not reorder', true); });
+  }
+
+})();
+</script>
+</body>
+</html>

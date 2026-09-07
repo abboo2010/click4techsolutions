@@ -1,0 +1,12 @@
+{
+  "name": "click4techsolutions-cms",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Browser CMS for click4techsolutions.com, backed by Supabase and Netlify Functions",
+  "scripts": {
+    "seed": "node scripts/seed.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4"
+  }
+}
