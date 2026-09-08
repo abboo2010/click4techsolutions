@@ -1,193 +1,166 @@
-# Click4Tech Solutions — Client Support Ticket System
+# Click4Tech Solutions — Website CMS
 
-This adds a real client support portal to click4techsolutions.com, built the
-same way as the CMS: Supabase (Postgres) holds the data, Netlify Functions
-sit in between so the browser never talks to the database directly, and
-everything is styled to match the live site. It lives on the **same**
-Supabase project, GitHub repo, and Netlify site as the CMS — you don't need
-to create anything new there, just add these files and a few settings.
+This adds a real browser CMS to click4techsolutions.com — the same pattern as
+the CMS built for srisubramaniarlokkawi.org: a password-gated `/cms.html`
+dashboard, content stored in Supabase (Postgres) instead of hardcoded in the
+HTML, and Netlify Functions in between so the browser never touches the
+database directly.
 
-## What this gives you
+**Nothing changes for a visitor if you never finish setup.** The homepage
+still has all of today's real content hardcoded in it as a fallback — the CMS
+only takes over once you've done the one-time setup below. If the CMS is
+ever unreachable for any reason, the site quietly falls back to that
+hardcoded content instead of breaking.
 
-- **`/support.html`** — one combined page: clients log in or sign up with
-  their own email + password (a real account each, not a shared password),
-  and land straight in their dashboard on the same page — submit a new
-  ticket (name/email prefilled from their account, category, priority,
-  subject, details, and an optional file attachment), see all their past
-  tickets and statuses, open one to read replies and reply back. Logging
-  out returns to the login form on this same page, with no separate URL to
-  keep track of.
-- **`/support-portal.html`** — kept only as a redirect stub, in case anyone
-  has the old link bookmarked; it just forwards to `/support.html`.
-- **`/support-admin.html`** — password-gated (same ADMIN_PASSWORD as your
-  CMS), where you see every client's tickets, filter by status/category/
-  priority, reply, change status (Open / In Progress / Resolved / Closed),
-  and change priority (Low / Medium / High). Attachments on a client's
-  message show up as a download link in the thread.
-- **`/support-reset-password.html`** — lets a client reset their own portal
-  password if they forget it, without needing to email you.
-- Email notifications (once you set up the free Resend step below): you get
-  emailed when a client opens a ticket or replies; the client gets emailed
-  when you reply. If you skip that step, everything else still works —
-  you'd just need to check the admin dashboard yourself instead of getting
-  pinged.
+## What's in here
 
-Ticket categories built in: Email creation, Email login problem, Forgotten
-password, Website / hosting issue, General / other.
-
-Each client can only ever see their **own** tickets — this isn't just
-app-level checking, it's enforced by the database itself (Postgres Row
-Level Security), so even a bug elsewhere couldn't leak one client's tickets
-to another.
+- `index.html` — the homepage, mostly unchanged. The old inline `<script>`
+  block was split into two files (see below) so content can be swapped in
+  before the page's animations/behaviour run.
+- `assets/cms-loader.js` — fetches live content from Supabase (via
+  `cms-content.js`) and rewrites the hero, clients, services, why-us cards,
+  work items, pricing factors, FAQs, and contact info sections. Falls back
+  silently if that fetch fails or times out.
+- `assets/site-animations.js` — the site's original scroll reveal, hero
+  particle background, count-up stats, marquee, FAQ accordion, etc. Loaded
+  only *after* `cms-loader.js` finishes, so it always initializes against
+  final content.
+- `cms.html` — the admin dashboard. Log in with one shared password, edit
+  any section, hit Save.
+- `netlify/functions/cms-content.js` — public endpoint the homepage calls;
+  returns all published content in one request.
+- `netlify/functions/cms-crud.js` — password-gated endpoint the dashboard
+  uses to list/create/update/delete/reorder content.
+- `netlify/functions/cms-upload-image.js` — password-gated image upload
+  (client logos etc.), stores files in Supabase Storage.
+- `supabase/cms-schema.sql` — creates all the tables + storage bucket, run
+  once in Supabase's SQL Editor.
+- `supabase/cms-schema-v2.sql` — a small additive migration: adds the
+  `marquee_items` table for the scrolling ticker strip under the hero, and
+  seeds it with the current wording so nothing changes until you edit it.
+  Run once, after `cms-schema.sql`.
+- `content/site-content.json` + `content/images/` — the site's real,
+  current content and images, extracted from the live page. Used only by...
+- `scripts/seed.mjs` — a one-time script that uploads those images and
+  inserts that content into Supabase, so the CMS starts out already
+  matching what's live today instead of empty.
+- `manifest.json`, `sw.js`, `assets/icon-192.png`, `assets/icon-512.png` —
+  makes the homepage installable as an app on a phone (same "Add to Home
+  Screen" / "Install app" setup used for the MediTouch app), see
+  [Installing on a phone](#installing-on-a-phone) below.
 
 ## One-time setup
 
-### 1. Supabase — enable client logins + add the new tables
+### 1. Create a Supabase project
 
-In your **existing** Supabase project (the one your CMS already uses):
+Go to [supabase.com](https://supabase.com), create a free project (any
+region close to Malaysia, e.g. Singapore). Once it's ready:
 
-- Sidebar → **Authentication** → **Providers** → make sure **Email** is
-  enabled (it is by default).
-- Same **Authentication** section → **Settings** (or **Providers → Email**
-  depending on your Supabase version) → decide whether to require **Confirm
-  email**. Recommended: turn it **off** for now, so a client can sign up and
-  log straight in without waiting on a confirmation email — you can turn it
-  on later once Resend (step 3) is set up, since Supabase needs its own
-  email sending configured to deliver those confirmation emails reliably.
-- Sidebar → **SQL Editor** → **New query**, paste the entire contents of
-  `supabase/support-schema.sql`, click **Run**. This adds two new tables
-  (`tickets`, `ticket_messages`) alongside your existing CMS tables — it
-  doesn't touch anything the CMS uses.
-- Then, in a **new query** in the same SQL Editor, paste the entire contents
-  of `supabase/support-schema-v2.sql` and click **Run**. This is a small
-  additive migration for the Priority + Attachments feature: it adds a
-  `priority` column to `tickets`, `attachment_path`/`attachment_name`
-  columns to `ticket_messages`, and creates a **private** Storage bucket
-  called `ticket-attachments` (attachments are never publicly accessible —
-  they're only ever served through short-lived, signed links generated by
-  the Netlify Functions). Safe to run even if you already ran the original
-  `support-schema.sql` weeks ago — it only adds what's missing.
-- Sidebar → **Project Settings → API**. You already have the **Project
-  URL** and **service_role** key from the CMS setup. This time also copy
-  the **anon / public** key (a different key, safe to expose in the
-  browser — that's what it's for).
+- In the sidebar, go to **SQL Editor** → **New query**, paste the entire
+  contents of `supabase/cms-schema.sql`, and click **Run**. This creates
+  every table plus a public `click4tech-media` storage bucket for images.
+- Then, in another **new query**, paste the entire contents of
+  `supabase/cms-schema-v2.sql` and click **Run**. This adds the ticker
+  strip (the scrolling client/tech names just under the hero) as an
+  editable "Ticker" tab in the dashboard.
+- Go to **Project Settings → API**. Copy the **Project URL** and the
+  **service_role** key (not the `anon` key — the service role key is what
+  lets the Netlify Functions manage content; it must never be exposed in
+  the browser).
 
-### 2. Fill in the client-side config
+### 2. Seed the CMS with the site's real content
 
-Open `assets/support-config.js` and replace the two placeholder values with
-your real Project URL and anon key from step 1:
+On your own computer (needs Node.js installed):
 
-```js
-window.C4T_SUPABASE_URL = 'https://xxxxxxxxxxxx.supabase.co';
-window.C4T_SUPABASE_ANON_KEY = 'your-anon-public-key-here';
+```bash
+cd click4tech-cms          # this folder
+npm install
+SUPABASE_URL=https://xxxx.supabase.co SUPABASE_SERVICE_ROLE_KEY=xxxx npm run seed
 ```
 
-(This is the same Project URL you already used for the CMS — just the anon
-key is new.)
+(Or put those two lines in a `.env` file in this folder instead of passing
+them inline, then just run `npm run seed`.)
 
-### 3. Resend — email notifications (optional but recommended)
+This uploads the 7 client logos + footer logo to Supabase Storage and
+fills every table with the site's current real content — so the first time
+you open the CMS, it already matches what's live.
 
-1. Go to [resend.com](https://resend.com) and create a free account (100
-   emails/day free).
-2. Add your domain: **Domains → Add Domain**, enter `click4techsolutions.com`.
-3. Resend will show you 2-3 DNS records to add (usually a couple of `TXT`
-   records and one `MX` or `CNAME`). Add these in the same place you manage
-   your domain's DNS at CloudAccess.net (wherever you added/checked records
-   before). Then click **Verify** in Resend — this can take anywhere from a
-   few minutes to a few hours, same as any DNS change.
-4. Once verified, go to **API Keys** → **Create API Key**, copy it (you'll
-   only see it once).
-
-If you'd rather skip this step for now, that's fine — just skip to step 4
-and leave the two Resend environment variables out. The ticket system will
-work fully; you'll just need to check `/support-admin.html` yourself
-instead of getting emailed.
-
-### 4. Netlify — environment variables
+### 3. Set environment variables in Netlify
 
 In your Netlify project (click4techsolutionsupdated) → **Project
-configuration → Environment variables**, you already have `SUPABASE_URL`,
-`SUPABASE_SERVICE_ROLE_KEY`, and `ADMIN_PASSWORD` from the CMS — leave
-those as they are. Add these new ones:
+configuration → Environment variables**, add:
 
 | Key | Value |
 |---|---|
-| `RESEND_API_KEY` | the API key from step 3 (skip if not using Resend yet) |
-| `RESEND_FROM_EMAIL` | e.g. `Click4Tech Support <support@click4techsolutions.com>` (skip if not using Resend yet) |
-| `ADMIN_NOTIFY_EMAIL` | where YOU want new-ticket emails sent — optional, defaults to `info@click4techsolutions.com` |
-| `SITE_URL` | `https://click4techsolutions.com` — optional, just makes the links inside notification emails clickable |
+| `SUPABASE_URL` | same Project URL from step 1 |
+| `SUPABASE_SERVICE_ROLE_KEY` | same service_role key from step 1 |
+| `ADMIN_PASSWORD` | a password you choose for logging into `/cms.html` |
 
-### 5. Merge into the GitHub repo and redeploy
+### 4. Merge this into the GitHub repo and redeploy
 
-Add these files to your `click4techsolutions` repo, same as the CMS files:
+Add every file in this folder to your `click4techsolutions` GitHub repo
+(same repo the homepage already lives in), keeping the folder structure:
+`index.html` at the root (replacing the current one), plus the new
+`assets/`, `netlify/`, `cms.html`, `netlify.toml`, `manifest.json`, and
+`sw.js` (the last two go at the repo root, next to `index.html`). You don't
+need to include `content/`, `scripts/`, `package.json` or this README in
+the repo — those were only needed for the one-time seed step above — but
+leaving them in doesn't hurt anything either.
 
-- `support.html` — this now contains BOTH the login/signup screen and the
-  client dashboard in one page (they used to be two separate files).
-- `support-portal.html` — just a small redirect stub now, kept so the old
-  link still works.
-- `support-admin.html`
-- `support-reset-password.html`
-- `assets/support-config.js` (new file in your existing `assets` folder)
-- `netlify/functions/ticket-create.js`
-- `netlify/functions/ticket-list.js`
-- `netlify/functions/ticket-thread.js`
-- `netlify/functions/ticket-reply.js`
-- `netlify/functions/ticket-status.js`
-- `netlify/functions/_email.js`
-- `netlify/functions/_supabase.js` — **this replaces your existing file of
-  the same name.** It has everything the old one had, plus one new helper
-  function the ticket system needs. Your CMS keeps working exactly as
-  before — nothing existing was changed, just added to.
+Push to `main`. Netlify will redeploy automatically (same as always) and
+pick up the new functions.
 
-You don't need `supabase/support-schema.sql`, `supabase/support-schema-v2.sql`,
-or this README in the repo — same as with the CMS, those were only needed
-for the one-time setup above (make sure you've run both of them in the SQL
-Editor before pushing this update, since the new code paths for priority
-and attachments depend on those columns and the storage bucket existing).
+### 5. Log in and start editing
 
-Push to `main`. Netlify redeploys automatically.
+Visit `https://click4techsolutions.com/cms.html`, enter the
+`ADMIN_PASSWORD` you set in step 3, and edit away. Changes go live on the
+homepage within about a minute (no redeploy needed).
 
-### 6. Try it out
+## What's in the CMS vs. what isn't
 
-1. Visit `https://click4techsolutions.com/support.html`, click **Sign Up**,
-   create a test account.
-2. You should land straight in the dashboard on that same page — submit a
-   test ticket.
-3. Visit `https://click4techsolutions.com/support-admin.html`, log in with
-   your existing `ADMIN_PASSWORD`, and you should see that ticket. Reply to
-   it and change its status.
-4. Go back to `support.html` (or log the test client out and back in) —
-   your reply should be there.
-5. If you set up Resend, check that both notification emails arrived.
+Editable: hero text and stats, the scrolling ticker strip just under the
+hero, client logos, all 12 services (title, description, icon, which group
+they're in), the 4 "why choose us" cards, all portfolio/work items
+(including their bullet points), the 3 pricing factors, every FAQ, and the
+contact phone/email/address/WhatsApp link.
 
-## Linking it from your main site
-
-These pages aren't wired into your homepage's navigation yet — for now
-they're only reachable if someone knows the direct link
-(`/support.html`). Whenever you're ready, let me know and I can add a
-"Client Support" link to the header or footer nav so clients can find it
-on their own.
+Not in the CMS (fixed in the code, matches the "what's not editable" scope
+used for the temple site too): the overall page design/layout, the "Why
+Choose Us" intro paragraph and its 4-item checklist on the left of that
+section, the contact form itself, and each icon is chosen from a fixed set
+of built-in icons rather than a fully custom image.
 
 ## Notes
 
-- Each client's tickets are only ever visible to that client and to you
-  (the admin) — enforced by the database itself, not just the app code.
-- A client who forgets their portal password uses
-  `/support-reset-password.html` (reached via "Forgot your password?" on
-  the login page) — this is separate from the "Forgotten password" ticket
-  category, which is for THEIR business email account, not this portal.
-- If a client replies to a ticket you'd marked Resolved, it automatically
-  reopens to Open. If you reply to an Open ticket, it automatically moves
-  to In Progress. You can also change status manually anytime from the
-  dropdown in the admin dashboard.
-- A Closed ticket can't receive client replies (they'd need to open a new
-  one) — but you can still reply to a closed ticket yourself if needed.
-- Every new ticket defaults to **Medium** priority; the client can change it
-  when submitting, and you can change it anytime from the admin thread view
-  (independent of status).
-- A client can optionally attach one file when submitting a new ticket
-  (screenshot, PDF, Word doc, or plain text — 5MB max). It's stored in a
-  private Supabase Storage bucket and only ever reachable through a
-  short-lived signed link shown in the thread — there's no permanent public
-  URL for it. Attachments aren't currently supported on replies, only on
-  the initial ticket.
+- The admin password is a single shared password (same pattern as the
+  other Click4Tech-built CMS panels) — there's no per-user login. Treat it
+  like any shared password.
+- Re-running `npm run seed` resets every table back to this original seed
+  content — don't re-run it after you've made your own edits in the CMS
+  unless you actually want to wipe those edits back to today's starting
+  point. The one exception is the "Ticker" table (`marquee_items`) — it's
+  seeded once by `cms-schema-v2.sql` instead, so `npm run seed` never
+  touches or resets your ticker edits.
+- All eight images (7 client logos + the footer logo) were extracted
+  directly from the live page's embedded image data, so what you see in
+  the CMS after seeding is pixel-identical to what's live now.
+
+## Installing on a phone
+
+Once `manifest.json`, `sw.js`, and the two `assets/icon-*.png` files are on
+the live site (step 4 above — no extra setup, they're just static files),
+visitors get a real "Install app" prompt instead of a plain bookmark, the
+same way the MediTouch app does:
+
+- **Android/Chrome**: a small "Install app" banner appears automatically,
+  or via the ⋮ menu → **Install app**.
+- **iPhone/Safari**: Share icon → **Add to Home Screen** (iOS never shows
+  an automatic banner for any site, this is normal).
+
+Installed, it opens full-screen with no browser address bar, uses the
+orange power-icon mark on a navy background as its home-screen icon, and
+is titled "Click4Tech" underneath. It's still the same live website under
+the hood — there's no separate app to maintain, and CMS edits show up
+immediately, same as in a browser. The only thing the service worker
+caches is the empty page shell (so it can open instantly even on a slow
+connection); it always fetches fresh content over the network first.

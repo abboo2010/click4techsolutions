@@ -1,0 +1,29 @@
+{
+  "id": "/index.html",
+  "name": "Click4Tech Solutions",
+  "short_name": "Click4Tech",
+  "description": "Click4Tech Solutions — IT solutions built around Sabah, one screen at a time. Touch-screen kiosks, multilingual PWAs, booking systems, admin dashboards and more.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#132A4E",
+  "theme_color": "#132A4E",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
