@@ -23,6 +23,7 @@ const SINGLETON_TABLES = {
 };
 
 const LIST_TABLES = {
+  marquee_items: ['text', 'is_published'],
   clients: ['name', 'logo_url', 'is_published'],
   services: ['group_name', 'icon_key', 'title', 'kicker', 'description', 'is_published'],
   why_cards: ['icon_key', 'title', 'description', 'is_published'],
