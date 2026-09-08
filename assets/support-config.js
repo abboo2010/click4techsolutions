@@ -10,5 +10,5 @@
 // Fill these in from Supabase -> Project Settings -> API:
 //   - Project URL         -> window.C4T_SUPABASE_URL
 //   - anon / public key   -> window.C4T_SUPABASE_ANON_KEY   (NOT service_role)
-window.C4T_SUPABASE_URL = 'https://vaafxtoazxfthapsoicv.supabase.co';
-window.C4T_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhYWZ4dG9henhmdGhhcHNvaWN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3ODAwODYsImV4cCI6MjEwNDM1NjA4Nn0.hBEcwW7wgePbCACTnz9kpXJ4J-YV0pVX81lzcVHNHGU';
+window.C4T_SUPABASE_URL = 'https://xxxxxxxxxxxx.supabase.co';
+window.C4T_SUPABASE_ANON_KEY = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
