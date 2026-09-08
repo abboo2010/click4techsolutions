@@ -421,6 +421,9 @@
       if (ok) enterApp();
     });
   })();
+
+  // Disable right-click / context menu on this page.
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
 })();
 </script>
 </body>
