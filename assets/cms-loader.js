@@ -87,6 +87,14 @@
     });
   }
 
+  function applyMarquee(items) {
+    var track = document.getElementById('marqueeTrack');
+    if (!track || !items || !items.length) return;
+    track.innerHTML = items.map(function (m) {
+      return '<span>' + esc(m.text) + '</span><span class="sep">•</span>';
+    }).join('\n      ');
+  }
+
   function applyClients(clients) {
     var track = document.getElementById('clientsTrack');
     if (!track || !clients) return;
@@ -199,6 +207,7 @@
 
   function applyContent(data) {
     try { applyHero(data.hero); } catch (e) { /* keep static fallback for this section */ }
+    try { applyMarquee(data.marquee_items); } catch (e) { }
     try { applyClients(data.clients); } catch (e) { }
     try { applyServices(data.services); } catch (e) { }
     try { applyWhyCards(data.why_cards); } catch (e) { }
