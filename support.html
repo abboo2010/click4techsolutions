@@ -80,6 +80,7 @@
   .ticket-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:10px;cursor:pointer;transition:box-shadow .15s ease;}
   .ticket-card:hover{box-shadow:0 6px 16px rgba(19,42,78,0.08);}
   .ticket-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;}
+  .ticket-num{font-weight:700;color:var(--text-dim);margin-right:6px;}
   .ticket-subject{font-weight:700;font-size:0.95rem;}
   .ticket-meta{font-size:0.78rem;color:var(--text-dim);display:flex;gap:8px;flex-wrap:wrap;}
 
@@ -111,7 +112,8 @@
   /* thread view */
   .thread-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
   .thread-head button.back{background:transparent;border:1px solid var(--line);border-radius:7px;padding:6px 10px;color:var(--navy-soft);font-size:0.8rem;}
-  .thread-subject{font-size:1.1rem;font-weight:700;margin:10px 0 4px;}
+  .thread-num{font-size:0.8rem;font-weight:700;color:var(--text-dim);margin-top:10px;}
+  .thread-subject{font-size:1.1rem;font-weight:700;margin:2px 0 4px;}
   .thread-meta{font-size:0.8rem;color:var(--text-dim);margin-bottom:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
 
   .messages{display:flex;flex-direction:column;gap:12px;margin-bottom:18px;}
@@ -249,6 +251,7 @@
       <div class="thread-head">
         <button class="back" id="backBtn">&larr; Back to tickets</button>
       </div>
+      <div class="thread-num" id="threadNum"></div>
       <div class="thread-subject" id="threadSubject"></div>
       <div class="thread-meta">
         <span class="badge" id="threadStatusBadge"></span>
@@ -462,7 +465,7 @@
       card.className = 'ticket-card';
       card.innerHTML =
         '<div class="ticket-top">' +
-          '<div class="ticket-subject">' + esc(t.subject) + '</div>' +
+          '<div class="ticket-subject"><span class="ticket-num">#' + esc(t.ticket_number) + '</span>' + esc(t.subject) + '</div>' +
           '<span class="badge status-' + esc(t.status) + '">' + esc(STATUS_LABELS[t.status] || t.status) + '</span>' +
         '</div>' +
         '<div class="ticket-meta">' +
@@ -546,6 +549,7 @@
   }
 
   function renderThread(ticket, messages){
+    document.getElementById('threadNum').textContent = '#' + ticket.ticket_number;
     document.getElementById('threadSubject').textContent = ticket.subject;
     var badge = document.getElementById('threadStatusBadge');
     badge.textContent = STATUS_LABELS[ticket.status] || ticket.status;
