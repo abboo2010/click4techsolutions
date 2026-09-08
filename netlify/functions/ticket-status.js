@@ -1,12 +1,13 @@
 // POST /.netlify/functions/ticket-status
-// Body: { ticket_id, status }
+// Body: { ticket_id, status?, priority? } — at least one of status/priority.
 // Auth: admin only (x-admin-password).
 //
-// Lets the admin dashboard change a ticket's status directly (e.g. mark
-// resolved/closed, or reopen) without necessarily posting a reply message.
+// Lets the admin dashboard change a ticket's status and/or priority
+// directly, without necessarily posting a reply message.
 const { getSupabase, checkAdminPassword } = require('./_supabase');
 
 const ALLOWED_STATUSES = ['open', 'in_progress', 'resolved', 'closed'];
+const ALLOWED_PRIORITIES = ['low', 'medium', 'high'];
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -27,14 +28,29 @@ exports.handler = async (event) => {
 
   const ticketId = body.ticket_id;
   const status = body.status;
-  if (!ticketId || !ALLOWED_STATUSES.includes(status)) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'ticket_id and a valid status are required' }) };
+  const priority = body.priority;
+
+  if (!ticketId) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'ticket_id is required' }) };
   }
+  if (status !== undefined && !ALLOWED_STATUSES.includes(status)) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid status' }) };
+  }
+  if (priority !== undefined && !ALLOWED_PRIORITIES.includes(priority)) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid priority' }) };
+  }
+  if (status === undefined && priority === undefined) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Provide a status and/or priority to update' }) };
+  }
+
+  const update = { updated_at: new Date().toISOString() };
+  if (status !== undefined) update.status = status;
+  if (priority !== undefined) update.priority = priority;
 
   const supabase = getSupabase();
   const { error } = await supabase
     .from('tickets')
-    .update({ status, updated_at: new Date().toISOString() })
+    .update(update)
     .eq('id', ticketId);
 
   if (error) {

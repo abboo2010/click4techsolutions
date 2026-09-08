@@ -32,6 +32,7 @@ exports.handler = async (event) => {
   if (isAdmin) {
     if (qs.status) query = query.eq('status', qs.status);
     if (qs.category) query = query.eq('category', qs.category);
+    if (qs.priority) query = query.eq('priority', qs.priority);
   } else {
     const user = await getUserFromRequest(event);
     if (!user) {

@@ -50,5 +50,18 @@ exports.handler = async (event) => {
     return { statusCode: 500, body: JSON.stringify({ error: msgErr.message }) };
   }
 
-  return { statusCode: 200, body: JSON.stringify({ ticket, messages }) };
+  // Attachments live in a private Storage bucket, so each message that has
+  // one gets a fresh short-lived signed URL here rather than a permanent
+  // public link. If signing fails for some reason, the message still shows
+  // up fine — it just won't have a download link.
+  const messagesWithAttachments = await Promise.all((messages || []).map(async (m) => {
+    if (!m.attachment_path) return m;
+    const { data: signed, error: signErr } = await supabase.storage
+      .from('ticket-attachments')
+      .createSignedUrl(m.attachment_path, 3600);
+    if (signErr || !signed) return m;
+    return Object.assign({}, m, { attachment_url: signed.signedUrl });
+  }));
+
+  return { statusCode: 200, body: JSON.stringify({ ticket, messages: messagesWithAttachments }) };
 };
