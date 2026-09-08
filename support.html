@@ -86,6 +86,9 @@
   .badge.status-in_progress{background:#E4ECFB;color:#2E4E9E;}
   .badge.status-resolved{background:rgba(31,157,111,0.12);color:var(--mint);}
   .badge.status-closed{background:var(--line);color:var(--text-dim);}
+  .badge.priority-low{background:#E4ECFB;color:#2E4E9E;}
+  .badge.priority-medium{background:var(--orange-tint);color:var(--orange-deep);}
+  .badge.priority-high{background:rgba(198,57,47,0.12);color:var(--danger);}
 
   /* new ticket form */
   .form-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:20px;}
@@ -93,7 +96,15 @@
   .form-card .field label{font-size:0.8rem;font-weight:700;color:var(--navy-soft);}
   .form-card .field input,.form-card .field textarea,.form-card .field select{padding:9px 11px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--navy);}
   .form-card .field textarea{resize:vertical;min-height:90px;}
+  .form-card .field input[readonly]{background:var(--bg);color:var(--text-dim);cursor:default;}
+  .form-card .field-hint{font-size:0.74rem;color:var(--text-dim);margin-top:-2px;}
+  .form-card .field input[type="file"]{padding:7px 8px;background:#fff;}
   .form-actions{display:flex;justify-content:flex-end;gap:8px;}
+
+  .attachment-link{margin-top:8px;}
+  .attachment-link a{display:inline-flex;align-items:center;gap:5px;font-size:0.8rem;font-weight:700;text-decoration:none;}
+  .msg-bubble.client .attachment-link a{color:#fff;text-decoration:underline;}
+  .msg-bubble.admin .attachment-link a{color:var(--orange-deep);text-decoration:underline;}
 
   /* thread view */
   .thread-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
@@ -180,6 +191,14 @@
 
       <div class="form-card" id="newTicketForm" style="display:none;">
         <div class="field">
+          <label>Name</label>
+          <input id="ntName" type="text" readonly>
+        </div>
+        <div class="field">
+          <label>Email Address</label>
+          <input id="ntEmail" type="text" readonly>
+        </div>
+        <div class="field">
           <label>What's this about?</label>
           <select id="ntCategory">
             <option value="email_creation">Email creation</option>
@@ -190,12 +209,25 @@
           </select>
         </div>
         <div class="field">
+          <label>Priority</label>
+          <select id="ntPriority">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+        <div class="field">
           <label>Subject</label>
           <input id="ntSubject" type="text" placeholder="Short summary, e.g. 'Can't log into my email'">
         </div>
         <div class="field">
-          <label>Details</label>
+          <label>Message</label>
           <textarea id="ntMessage" placeholder="Describe the issue — include any error messages you're seeing."></textarea>
+        </div>
+        <div class="field">
+          <label>Attachment (optional)</label>
+          <input id="ntAttachment" type="file" accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.txt,.doc,.docx">
+          <div class="field-hint">Screenshot, PDF, Word doc, or text file — max 5MB.</div>
         </div>
         <div class="form-actions">
           <button class="btn btn-ghost" id="ntCancelBtn">Cancel</button>
@@ -215,6 +247,7 @@
       <div class="thread-subject" id="threadSubject"></div>
       <div class="thread-meta">
         <span class="badge" id="threadStatusBadge"></span>
+        <span class="badge" id="threadPriorityBadge"></span>
         <span id="threadCategory"></span>
       </div>
 
@@ -247,6 +280,8 @@
     general: 'General / other'
   };
   var STATUS_LABELS = { open: 'Open', in_progress: 'In Progress', resolved: 'Resolved', closed: 'Closed' };
+  var PRIORITY_LABELS = { low: 'Low', medium: 'Medium', high: 'High' };
+  var MAX_ATTACHMENT_BYTES = 5 * 1024 * 1024;
 
   var currentUser = null;
   var currentTicketId = null;
@@ -287,6 +322,8 @@
     currentUser = user;
     var name = (user.user_metadata && user.user_metadata.full_name) || user.email;
     document.getElementById('whoami').textContent = name + ' (' + user.email + ')';
+    document.getElementById('ntName').value = name;
+    document.getElementById('ntEmail').value = user.email;
 
     document.getElementById('loadingScreen').style.display = 'none';
     document.getElementById('authScreen').style.display = 'none';
@@ -424,6 +461,7 @@
           '<span class="badge status-' + esc(t.status) + '">' + esc(STATUS_LABELS[t.status] || t.status) + '</span>' +
         '</div>' +
         '<div class="ticket-meta">' +
+          '<span class="badge priority-' + esc(t.priority || 'medium') + '">' + esc(PRIORITY_LABELS[t.priority] || 'Medium') + '</span>' +
           '<span>' + esc(CATEGORY_LABELS[t.category] || t.category) + '</span>' +
           '<span>&middot; Updated ' + esc(fmtDate(t.updated_at)) + '</span>' +
         '</div>';
@@ -432,35 +470,62 @@
     });
   }
 
+  function readFileAsBase64(file){
+    return new Promise(function(resolve, reject){
+      var reader = new FileReader();
+      reader.onload = function(){ resolve(String(reader.result).split(',')[1] || ''); };
+      reader.onerror = function(){ reject(new Error('Could not read file')); };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function resetNewTicketForm(){
+    document.getElementById('newTicketForm').style.display = 'none';
+    document.getElementById('ntSubject').value = '';
+    document.getElementById('ntMessage').value = '';
+    document.getElementById('ntPriority').value = 'medium';
+    document.getElementById('ntAttachment').value = '';
+  }
+
   document.getElementById('newTicketBtn').addEventListener('click', function(){
     var form = document.getElementById('newTicketForm');
     form.style.display = form.style.display === 'none' ? 'block' : 'none';
   });
-  document.getElementById('ntCancelBtn').addEventListener('click', function(){
-    document.getElementById('newTicketForm').style.display = 'none';
-    document.getElementById('ntSubject').value = '';
-    document.getElementById('ntMessage').value = '';
-  });
+  document.getElementById('ntCancelBtn').addEventListener('click', resetNewTicketForm);
   document.getElementById('ntSubmitBtn').addEventListener('click', async function(){
     var btn = this;
     var category = document.getElementById('ntCategory').value;
+    var priority = document.getElementById('ntPriority').value;
     var subject = document.getElementById('ntSubject').value.trim();
     var message = document.getElementById('ntMessage').value.trim();
+    var fileInput = document.getElementById('ntAttachment');
+    var file = fileInput.files && fileInput.files[0];
     if (!subject || !message) { toast('Please fill in a subject and details.', true); return; }
+    if (file && file.size > MAX_ATTACHMENT_BYTES) { toast('That file is too large — max 5MB.', true); return; }
 
     btn.disabled = true; btn.textContent = 'Submitting…';
+
+    var payload = { category: category, priority: priority, subject: subject, message: message };
+    if (file) {
+      try {
+        payload.attachment = { name: file.name, type: file.type || 'application/octet-stream', data: await readFileAsBase64(file) };
+      } catch (e) {
+        btn.disabled = false; btn.textContent = 'Submit Ticket';
+        toast('Could not read the attached file. Try again or submit without it.', true);
+        return;
+      }
+    }
+
     var res = await authedFetch(CREATE_API, {
       method: 'POST',
-      body: JSON.stringify({ category: category, subject: subject, message: message })
+      body: JSON.stringify(payload)
     });
     btn.disabled = false; btn.textContent = 'Submit Ticket';
     if (!res) return;
     var data = await res.json();
     if (!res.ok) { toast(data.error || 'Failed to submit ticket', true); return; }
 
-    document.getElementById('newTicketForm').style.display = 'none';
-    document.getElementById('ntSubject').value = '';
-    document.getElementById('ntMessage').value = '';
+    resetNewTicketForm();
     toast('Ticket submitted!');
     loadTickets();
   });
@@ -480,6 +545,9 @@
     var badge = document.getElementById('threadStatusBadge');
     badge.textContent = STATUS_LABELS[ticket.status] || ticket.status;
     badge.className = 'badge status-' + ticket.status;
+    var pBadge = document.getElementById('threadPriorityBadge');
+    pBadge.textContent = PRIORITY_LABELS[ticket.priority] || 'Medium';
+    pBadge.className = 'badge priority-' + (ticket.priority || 'medium');
     document.getElementById('threadCategory').textContent = CATEGORY_LABELS[ticket.category] || ticket.category;
 
     var msgsEl = document.getElementById('messagesList');
@@ -487,9 +555,13 @@
     messages.forEach(function(m){
       var bubble = document.createElement('div');
       bubble.className = 'msg-bubble ' + (m.sender_type === 'admin' ? 'admin' : 'client');
+      var attachmentHtml = m.attachment_url
+        ? '<div class="attachment-link"><a href="' + esc(m.attachment_url) + '" target="_blank" rel="noopener">📎 ' + esc(m.attachment_name || 'Attachment') + '</a></div>'
+        : '';
       bubble.innerHTML =
         '<div class="who">' + (m.sender_type === 'admin' ? 'Click4Tech Support' : esc(m.sender_name || 'You')) + '</div>' +
         '<div>' + esc(m.body).replace(/\n/g, '<br>') + '</div>' +
+        attachmentHtml +
         '<div class="when">' + esc(fmtDate(m.created_at)) + '</div>';
       msgsEl.appendChild(bubble);
     });

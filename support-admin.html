@@ -54,10 +54,17 @@
   .badge.status-in_progress{background:#E4ECFB;color:#2E4E9E;}
   .badge.status-resolved{background:rgba(31,157,111,0.12);color:var(--mint);}
   .badge.status-closed{background:var(--line);color:var(--text-dim);}
+  .badge.priority-low{background:#E4ECFB;color:#2E4E9E;}
+  .badge.priority-medium{background:var(--orange-tint);color:var(--orange-deep);}
+  .badge.priority-high{background:rgba(198,57,47,0.12);color:var(--danger);}
 
   .thread-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
   .thread-head button.back{background:transparent;border:1px solid var(--line);border-radius:7px;padding:6px 10px;color:var(--navy-soft);font-size:0.8rem;}
-  .status-select{padding:7px 10px;border-radius:8px;border:1px solid var(--line);font-size:0.82rem;font-weight:700;}
+  .thread-head-controls{display:flex;gap:8px;flex-wrap:wrap;}
+  .status-select,.priority-select{padding:7px 10px;border-radius:8px;border:1px solid var(--line);font-size:0.82rem;font-weight:700;}
+
+  .attachment-link{margin-top:8px;}
+  .attachment-link a{display:inline-flex;align-items:center;gap:5px;font-size:0.8rem;font-weight:700;color:var(--orange-deep);text-decoration:underline;}
 
   .thread-subject{font-size:1.1rem;font-weight:700;margin:10px 0 4px;}
   .thread-meta{font-size:0.8rem;color:var(--text-dim);margin-bottom:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
@@ -116,6 +123,12 @@
       <option value="website_hosting">Website / hosting issue</option>
       <option value="general">General / other</option>
     </select>
+    <select id="priorityFilter">
+      <option value="">All priorities</option>
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
   </div>
 
   <main>
@@ -127,12 +140,19 @@
     <div id="panelThread" class="panel">
       <div class="thread-head">
         <button class="back" id="backBtn">&larr; Back to tickets</button>
-        <select class="status-select" id="statusSelect">
-          <option value="open">Open</option>
-          <option value="in_progress">In Progress</option>
-          <option value="resolved">Resolved</option>
-          <option value="closed">Closed</option>
-        </select>
+        <div class="thread-head-controls">
+          <select class="priority-select" id="prioritySelect">
+            <option value="low">Low priority</option>
+            <option value="medium">Medium priority</option>
+            <option value="high">High priority</option>
+          </select>
+          <select class="status-select" id="statusSelect">
+            <option value="open">Open</option>
+            <option value="in_progress">In Progress</option>
+            <option value="resolved">Resolved</option>
+            <option value="closed">Closed</option>
+          </select>
+        </div>
       </div>
       <div class="thread-subject" id="threadSubject"></div>
       <div class="thread-meta" id="threadMeta"></div>
@@ -167,9 +187,11 @@
     general: 'General / other'
   };
   var STATUS_LABELS = { open: 'Open', in_progress: 'In Progress', resolved: 'Resolved', closed: 'Closed' };
+  var PRIORITY_LABELS = { low: 'Low', medium: 'Medium', high: 'High' };
 
   var currentStatusFilter = '';
   var currentCategoryFilter = '';
+  var currentPriorityFilter = '';
   var currentTicketId = null;
 
   function toast(msg, isError){
@@ -253,11 +275,16 @@
     currentCategoryFilter = this.value;
     loadTickets();
   });
+  document.getElementById('priorityFilter').addEventListener('change', function(){
+    currentPriorityFilter = this.value;
+    loadTickets();
+  });
 
   async function loadTickets(){
     var qs = [];
     if (currentStatusFilter) qs.push('status=' + encodeURIComponent(currentStatusFilter));
     if (currentCategoryFilter) qs.push('category=' + encodeURIComponent(currentCategoryFilter));
+    if (currentPriorityFilter) qs.push('priority=' + encodeURIComponent(currentPriorityFilter));
     var url = LIST_API + (qs.length ? '?' + qs.join('&') : '');
     var res = await adminFetch(url);
     if (res.status === 401) { document.getElementById('logoutBtn').click(); return; }
@@ -286,6 +313,7 @@
         '<div class="ticket-who">' + esc(who) + '</div>' +
         '<div class="ticket-meta">' +
           '<span>' + esc(CATEGORY_LABELS[t.category] || t.category) + '</span>' +
+          '<span class="badge priority-' + esc(t.priority || 'medium') + '">' + esc(PRIORITY_LABELS[t.priority] || 'Medium') + '</span>' +
           '<span>&middot; Updated ' + esc(fmtDate(t.updated_at)) + '</span>' +
         '</div>';
       card.addEventListener('click', function(){ openThread(t.id); });
@@ -310,15 +338,20 @@
     if (ticket.company_name) who += ' (' + ticket.company_name + ')';
     document.getElementById('threadMeta').textContent = who + ' · ' + (CATEGORY_LABELS[ticket.category] || ticket.category);
     document.getElementById('statusSelect').value = ticket.status;
+    document.getElementById('prioritySelect').value = ticket.priority || 'medium';
 
     var msgsEl = document.getElementById('messagesList');
     msgsEl.innerHTML = '';
     messages.forEach(function(m){
       var bubble = document.createElement('div');
       bubble.className = 'msg-bubble ' + (m.sender_type === 'admin' ? 'admin' : 'client');
+      var attachmentHtml = m.attachment_url
+        ? '<div class="attachment-link"><a href="' + esc(m.attachment_url) + '" target="_blank" rel="noopener">📎 ' + esc(m.attachment_name || 'Attachment') + '</a></div>'
+        : '';
       bubble.innerHTML =
         '<div class="who">' + (m.sender_type === 'admin' ? 'You (Click4Tech Support)' : esc(m.sender_name || 'Client')) + '</div>' +
         '<div>' + esc(m.body).replace(/\n/g, '<br>') + '</div>' +
+        attachmentHtml +
         '<div class="when">' + esc(fmtDate(m.created_at)) + '</div>';
       msgsEl.appendChild(bubble);
     });
@@ -334,6 +367,17 @@
     var data = await res.json();
     if (!res.ok) { toast(data.error || 'Failed to update status', true); return; }
     toast('Status updated to ' + (STATUS_LABELS[status] || status));
+  });
+
+  document.getElementById('prioritySelect').addEventListener('change', async function(){
+    var priority = this.value;
+    var res = await adminFetch(STATUS_API, {
+      method: 'POST',
+      body: JSON.stringify({ ticket_id: currentTicketId, priority: priority })
+    });
+    var data = await res.json();
+    if (!res.ok) { toast(data.error || 'Failed to update priority', true); return; }
+    toast('Priority updated to ' + (PRIORITY_LABELS[priority] || priority));
   });
 
   document.getElementById('replySendBtn').addEventListener('click', async function(){
