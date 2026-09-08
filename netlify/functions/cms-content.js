@@ -4,6 +4,7 @@
 const { getSupabase } = require('./_supabase');
 
 const LIST_TABLES = [
+  'marquee_items',
   'clients',
   'services',
   'why_cards',
