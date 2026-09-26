@@ -19,6 +19,12 @@
       title: 'IR@SABAH Case Study',
       caseStudy: 'irsabah-case-study.html',
       poster: 'irsabah-poster.html'
+    },
+    {
+      match: /subramaniar|lok\s*kawi/i,
+      title: 'Sri Subramaniar Alayam Case Study',
+      caseStudy: 'srisubramaniar-case-study.html',
+      poster: 'srisubramaniar-poster.html'
     }
   ];
 

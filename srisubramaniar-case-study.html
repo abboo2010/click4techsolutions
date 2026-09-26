@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sri Subramaniar Alayam Case Study | Click 4 Tech Solutions</title>
+<meta name="description" content="Sri Subramaniar Alayam: one site, three screens. A trilingual kiosk, installable app and website with race-proof pooja registration for a Lok Kawi temple, built by Click 4 Tech Solutions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+Tamil:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#3A0A12; --ink-soft:#5B4046; --muted:#7A6A6C;
+    --paper:#FFFCF7; --gold:#B8862B; --gold-tint:#F8ECD6; --maroon-tint:#F6EEEE;
+    --line:rgba(58,10,18,0.15);
+  }
+  *{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{ margin:0; background:#EFEAE3; color:var(--ink); font-family:'IBM Plex Sans','Noto Sans Tamil',system-ui,sans-serif; font-size:15px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  .sheet{ max-width:860px; margin:0 auto; background:var(--paper); padding:40px 44px 56px; }
+  @media (min-width:900px){ body{ padding:28px 0; } }
+  @media (max-width:640px){ .sheet{ padding:24px 18px 40px; } }
+
+  .head{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:16px; border-bottom:3px solid var(--ink); }
+  .brand{ display:flex; align-items:center; gap:12px; min-width:0; }
+  .brand img{ width:40px; height:40px; flex:none; object-fit:contain; }
+  .brand b{ font-family:'Fraunces',Georgia,serif; font-size:1.1rem; font-weight:600; }
+  .brand b i{ font-style:normal; color:var(--gold); }
+  .head-meta{ font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--muted); text-align:right; line-height:1.5; }
+  @media (max-width:520px){ .head-meta{ display:none; } }
+
+  .pill{ display:inline-block; margin-top:28px; background:var(--ink); color:#fff; font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:.14em; padding:7px 16px; border-radius:999px; }
+  h1{ font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:clamp(1.8rem,5vw,2.5rem); line-height:1.1; margin:14px 0 10px; }
+  .lede{ color:var(--muted); font-size:1.02rem; max-width:36em; margin:0 0 14px; }
+  .by{ font-size:0.78rem; color:var(--muted); display:flex; flex-wrap:wrap; gap:6px 26px; margin-bottom:6px; }
+  .by b{ color:var(--ink); font-weight:600; }
+
+  h2{ font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.35rem; margin:34px 0 10px; }
+  p{ margin:0 0 12px; }
+  p strong{ font-weight:600; }
+  code{ font-family:'IBM Plex Mono',monospace; font-size:0.88em; background:rgba(58,10,18,0.06); padding:1px 5px; border-radius:4px; }
+  .ta{ font-family:'Noto Sans Tamil','IBM Plex Sans',sans-serif; }
+
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:14px 0 6px; }
+  @media (max-width:640px){ .two{ grid-template-columns:1fr; } }
+  .box{ border:1px solid var(--line); border-radius:10px; padding:16px 18px; background:var(--maroon-tint); }
+  .box.gold{ background:var(--gold-tint); border-color:rgba(184,134,43,0.6); }
+  .box small{ display:block; font-family:'IBM Plex Mono',monospace; font-size:0.66rem; letter-spacing:.12em; color:var(--muted); margin-bottom:6px; }
+  .box h3{ font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.08rem; margin:0 0 6px; }
+  .box p{ margin:0; font-size:0.85rem; color:var(--ink-soft); line-height:1.55; }
+
+  figure{ margin:18px 0 6px; }
+  figure img{ display:block; width:100%; height:auto; border-radius:10px; border:1px solid var(--line); box-shadow:0 14px 30px -20px rgba(58,10,18,.6); }
+  figcaption{ margin-top:8px; font-size:0.78rem; color:var(--muted); text-align:center; }
+
+  ul{ margin:8px 0 14px; padding-left:22px; }
+  li{ margin-bottom:4px; }
+
+  .stack{ display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+  .stack span{ font-family:'IBM Plex Mono',monospace; font-size:0.72rem; padding:6px 13px; border:1px solid var(--line); border-radius:999px; background:var(--maroon-tint); color:var(--ink-soft); }
+
+  .foot{ margin-top:34px; padding-top:16px; border-top:1px solid var(--line); text-align:center; font-size:0.8rem; font-style:italic; color:var(--muted); }
+  .actions{ margin-top:22px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  .actions a{ font-size:0.85rem; font-weight:600; text-decoration:none; padding:10px 18px; border-radius:8px; border:1.5px solid var(--ink); color:var(--ink); }
+  .actions a.solid{ background:var(--ink); color:#fff; }
+  .actions a:hover{ opacity:.85; }
+  @media print{ body{ background:#fff; padding:0; } .actions{ display:none; } .sheet{ padding:0; } }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="head">
+    <div class="brand">
+      <img src="assets/srisubramaniar/logo.png" alt="Sri Subramaniar Alayam logo" width="40" height="40">
+      <b>Sri Subramaniar Alayam <i>&middot;</i> Case Study</b>
+    </div>
+    <div class="head-meta">srisubramaniarlokkawi.org<br>Prepared by Ravi</div>
+  </header>
+
+  <span class="pill">TEMPLE DIGITAL PLATFORM</span>
+  <h1>Sri Subramaniar Alayam: One Site, Every Screen</h1>
+  <p class="lede">A trilingual touch-screen kiosk, installable app and website for a temple in Lok Kawi, Kota Kinabalu, Sabah &mdash; with pooja sponsorship that cannot be double-booked, and a committee-run content system.</p>
+  <div class="by"><span>Live at <b>srisubramaniarlokkawi.org</b></span><span>Prepared by <b>Ravi</b></span></div>
+
+  <figure>
+    <img src="assets/srisubramaniar/home-kiosk.jpg" alt="Sri Subramaniar Alayam home screen on the touch-screen kiosk layout" width="1280" height="800" loading="lazy">
+    <figcaption>The home screen in its wide, touch-screen kiosk layout.</figcaption>
+  </figure>
+
+  <h2>The brief</h2>
+  <p>A busy temple runs on its calendar: daily poojas, monthly and annual festivals, weekly Friday Annathanam, and devotees who want to sponsor a pooja or take part in one. The committee needed devotees to see all of this &mdash; on a screen in the temple, on their own phones, and on the web &mdash; in English, Bahasa Malaysia and Tamil.</p>
+  <p>They also needed sponsorship registration that would never sell the same slot twice, and a way for volunteer committee members, not developers, to keep everything up to date. Rather than four separate products, the brief called for one.</p>
+
+  <h2>Two deliverables in one project</h2>
+  <div class="two">
+    <div class="box">
+      <small>01 &middot; THE APP</small>
+      <h3>One site, every screen</h3>
+      <p>A fixed touch-screen kiosk, a browsable website and an installable phone app &mdash; one responsive codebase, deployed everywhere at once.</p>
+    </div>
+    <div class="box gold">
+      <small>02 &middot; THE COMMITTEE CMS</small>
+      <h3>Run by the committee</h3>
+      <p>Two password-protected admin pages let committee members edit every section and manage registrations themselves &mdash; no developer, no redeploy, live instantly.</p>
+    </div>
+  </div>
+
+  <h2>The approach: one build, every screen</h2>
+  <p>The site is a single progressive web app &mdash; one codebase of HTML, CSS and JavaScript, with no separate native app to maintain. The same responsive design adapts to wherever it is opened:</p>
+  <p><strong>As a temple kiosk</strong>, it opens on a full-screen splash featuring Lord Murugan, the temple emblem and a single &ldquo;Enter&rdquo; button. Inside, a left-hand navigation rail and large tiles make it easy to use by touch, and after a period of inactivity it returns itself to the home screen so the next visitor starts fresh.</p>
+  <p><strong>On a phone</strong>, the rail becomes a slide-in menu and the tiles reflow into a compact app layout. It can be installed to the home screen and keeps working offline after the first visit.</p>
+  <p><strong>On a desktop browser</strong>, it opens out into a full temple website with the same navigation rail, hero banner and content tiles.</p>
+  <p>Because it is one build, a change &mdash; a new event, a corrected pooja time, a new photo &mdash; is made once and appears correctly everywhere.</p>
+
+  <figure>
+    <img src="assets/srisubramaniar/home-tamil.jpg" alt="The same home screen switched to Tamil" width="1280" height="800" loading="lazy">
+    <figcaption>The same screen in Tamil &mdash; every page, menu and heading switches language instantly.</figcaption>
+  </figure>
+
+  <h2>What&rsquo;s running underneath</h2>
+  <p>The visible experience is only part of the story. A few things happen behind the scenes that a typical temple website doesn&rsquo;t do:</p>
+  <p><strong>Registration that can&rsquo;t double-book.</strong> The Prayers &amp; Registration page lists each pooja and shows which of three roles are still open: Ubayakarar (the pooja sponsor), Annathanam sponsor and Participant. Bookings are made in a Postgres database that locks the slot while it is being claimed, so even two devotees submitting the same Ubayakarar slot in the same second cannot both succeed. Poojas are marked Upcoming or Completed automatically by date, and Completed poojas keep their sponsor and participant records as the temple&rsquo;s permanent record.</p>
+  <p><strong>Clear rules for payment.</strong> For an annual-prayer Annathanam slot, the site only records who has claimed it &mdash; the devotee arranges and pays the caterer directly, and the page lists the temple&rsquo;s regular caterers. Ubayakarar, paid participation and weekly Friday Annathanam sponsorship show a DuitNow QR to pay, then proof of payment is sent over WhatsApp, and the committee confirms each booking from the admin page.</p>
+  <p><strong>A committee-run CMS.</strong> More than fifteen sections &mdash; hero banner, home tiles, deities, pooja timings, sevas, announcements, gallery, membership, committee members, notice ticker and more &mdash; are edited from a browser dashboard. Photos are resized in the browser and uploaded straight to storage.</p>
+  <p><strong>Individual admin logins.</strong> Instead of one shared password, each committee member has their own username and password, with separate access for Content and for Prayers &amp; Bookings, and a master account that can add, change or remove logins. Removing someone&rsquo;s access takes effect on their next click.</p>
+  <p><strong>Privacy-first membership lookup.</strong> Devotees check their membership status by membership number. Only the matched record is ever returned to the browser, and the NRIC is never sent to the public page.</p>
+  <p><strong>A trilingual experience.</strong> English, Bahasa Malaysia and Tamil are built in across pages, menus and even committee names, and switch instantly without a reload.</p>
+  <p><strong>Reaching devotees.</strong> Visitors can turn on notifications with the bell icon, and the committee sends a message to every subscribed device from the CMS &mdash; with no personal details collected. A configurable welcome popup, notice ticker and WhatsApp &ldquo;Chat with Us&rdquo; card can each be switched on or off from the same dashboard.</p>
+  <p><strong>A real production deployment.</strong> The site runs on its own domain (srisubramaniarlokkawi.org) with SSL, auto-deploying from Git through a serverless host. If the database is ever unreachable, the site falls back to a bundled copy of its content instead of going blank.</p>
+
+  <figure>
+    <img src="assets/srisubramaniar/deities-kiosk.jpg" alt="The Deities screen showing photographs of the temple's shrines" width="1280" height="800" loading="lazy">
+    <figcaption>The Deities screen, with photographs uploaded by the committee through the CMS.</figcaption>
+  </figure>
+
+  <h2>Why one build instead of several</h2>
+  <p>The obvious alternative &mdash; a kiosk application, a separate mobile app and a separate website &mdash; would have meant several codebases to keep in sync and several places for a bug to hide every time the temple wanted to add a festival or fix a timing. Building it once as a responsive PWA means:</p>
+  <ul>
+    <li>One update ships everywhere at once.</li>
+    <li>One CMS controls every screen&rsquo;s content.</li>
+    <li>A new display &mdash; a second kiosk or a different tablet &mdash; costs almost nothing to add; it is just another screen size the same app already fills.</li>
+  </ul>
+  <p>For a temple run by volunteers without an in-house IT team, that maintainability is arguably a more valuable decision than any single feature on the page.</p>
+
+  <h2>Tech stack</h2>
+  <div class="stack">
+    <span>HTML / CSS / JavaScript (PWA, no build framework)</span>
+    <span>Postgres database (Supabase) with row-level security</span>
+    <span>Serverless functions (Netlify)</span>
+    <span>Web Push notifications</span>
+    <span>Git-based CI/CD to a serverless host</span>
+  </div>
+
+  <div class="foot">This case study accompanies a one-page visual poster of the same project.</div>
+  <div class="actions">
+    <a class="solid" href="srisubramaniar-poster.html" target="_blank" rel="noopener">View the poster</a>
+    <a href="index.html#work" target="_top">Back to Click 4 Tech</a>
+  </div>
+</main>
+</body>
+</html>

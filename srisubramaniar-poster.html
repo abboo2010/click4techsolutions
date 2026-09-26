@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sri Subramaniar Alayam Poster | Click 4 Tech Solutions</title>
+<meta name="description" content="Sri Subramaniar Alayam: one build for the temple kiosk, tablet, phone and web. A trilingual platform with race-proof pooja registration, built by Click 4 Tech Solutions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+Tamil:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#3A0A12; --muted:#7A6A6C; --paper:#FFFCF7;
+    --gold:#D9A84A; --gold-deep:#B8862B;
+    --panel:#2A070C; --panel-2:#3C0F17;
+    --line:rgba(58,10,18,0.15); --tint:#F6EEEE;
+  }
+  *{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{ margin:0; background:#EFEAE3; color:var(--ink); font-family:'IBM Plex Sans','Noto Sans Tamil',system-ui,sans-serif; font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .poster{ max-width:900px; margin:0 auto; background:var(--paper); padding:36px 40px 34px; }
+  @media (min-width:940px){ body{ padding:28px 0; } }
+  @media (max-width:640px){ .poster{ padding:22px 16px 28px; } }
+
+  .head{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:18px; border-bottom:1px solid var(--line); }
+  .brand{ display:flex; align-items:center; gap:14px; min-width:0; }
+  .brand img{ width:44px; height:44px; flex:none; object-fit:contain; }
+  .brand h2{ margin:0; font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.2rem; line-height:1.2; }
+  .brand h2 em{ font-style:normal; color:var(--gold-deep); }
+  .brand p{ margin:0; font-size:0.78rem; color:var(--muted); }
+  .head-meta{ font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--muted); text-align:right; line-height:1.5; }
+  @media (max-width:560px){ .head-meta{ display:none; } .brand p{ font-size:0.7rem; } }
+
+  .pill{ display:inline-flex; align-items:center; gap:9px; margin-top:26px; background:var(--ink); color:#fff; font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:.14em; padding:7px 16px; border-radius:999px; }
+  .pill::before{ content:""; width:7px; height:7px; border-radius:50%; background:var(--gold); }
+  h1{ font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:clamp(2rem,6vw,3rem); line-height:1.08; margin:16px 0 14px; max-width:12em; }
+  h1 em{ font-style:italic; }
+  .lede{ color:var(--muted); font-size:1rem; max-width:40em; margin:0 0 20px; }
+
+  .facts{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px 20px; margin-bottom:22px; }
+  @media (max-width:760px){ .facts{ grid-template-columns:1fr 1fr; } }
+  .facts small{ display:block; font-family:'IBM Plex Mono',monospace; font-size:0.66rem; letter-spacing:.1em; color:var(--muted); margin-bottom:2px; }
+  .facts b{ font-weight:600; font-size:0.84rem; line-height:1.4; display:block; }
+
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:34px; }
+  @media (max-width:640px){ .two{ grid-template-columns:1fr; } }
+  .box{ border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff; }
+  .box.gold{ background:#F8ECD6; border-color:var(--gold-deep); }
+  .box small{ display:block; font-family:'IBM Plex Mono',monospace; font-size:0.66rem; letter-spacing:.1em; color:var(--muted); margin-bottom:6px; }
+  .box.gold small{ color:var(--gold-deep); }
+  .box h3{ margin:0 0 6px; font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.1rem; }
+  .box p{ margin:0; font-size:0.82rem; color:var(--muted); line-height:1.55; }
+
+  .sec-title{ font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.7rem; margin:0 0 10px; line-height:1.2; }
+  .sec-lede{ color:var(--muted); max-width:44em; margin:0 0 20px; }
+
+  /* device cards */
+  .devices{ display:grid; grid-template-columns:1.6fr .9fr .75fr 1.6fr; gap:12px; align-items:stretch; margin-bottom:14px; }
+  @media (max-width:820px){ .devices{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:440px){ .devices{ grid-template-columns:1fr; } }
+  .dev{ border:1px solid var(--line); border-radius:14px; background:#fff; padding:12px 12px 16px; box-shadow:0 10px 26px -18px rgba(58,10,18,.5); display:flex; flex-direction:column; }
+  .dev h4{ margin:0; font-size:0.82rem; font-weight:600; }
+  .dev .tag{ align-self:flex-start; margin:6px 0 12px; font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:.08em; padding:3px 9px; border-radius:999px; background:var(--tint); color:var(--muted); }
+  .stage{ flex:1; display:flex; justify-content:center; align-items:center; min-height:200px; }
+
+  .monitor{ width:100%; }
+  .mon-frame{ background:#0a0a0f; border-radius:8px; padding:5px; box-shadow:0 12px 24px -12px rgba(0,0,0,.6); }
+  .mon-bar{ display:flex; gap:4px; padding:2px 3px 5px; }
+  .mon-bar i{ width:5px; height:5px; border-radius:50%; background:#3a3f4b; display:block; }
+  .mon-screen{ overflow:hidden; border-radius:3px; background:#2A070C; }
+  .mon-screen img{ width:100%; height:100%; object-fit:cover; object-position:0 0; display:block; }
+  .kiosk .mon-screen{ aspect-ratio:1280/800; }
+  .web .mon-screen{ aspect-ratio:1440/900; }
+  .mon-neck{ width:14%; height:14px; margin:0 auto; background:linear-gradient(#cfd3da,#aab0ba); }
+  .mon-base{ width:44%; height:6px; margin:0 auto; background:#0a0a0f; border-radius:6px; }
+
+  .tablet{ width:100%; max-width:140px; aspect-ratio:800/1280; background:#0a0a0f; border-radius:16px; padding:6px; box-shadow:0 14px 26px -12px rgba(0,0,0,.6); }
+  .tablet .scr{ width:100%; height:100%; border-radius:11px; overflow:hidden; background:#2A070C; }
+  .tablet img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .phone{ width:100%; max-width:104px; aspect-ratio:390/844; background:#0a0a0f; border-radius:18px; padding:5px; position:relative; box-shadow:0 14px 26px -12px rgba(0,0,0,.6); }
+  .phone::before{ content:""; position:absolute; top:5px; left:50%; transform:translateX(-50%); width:32px; height:7px; border-radius:7px; background:#0a0a0f; z-index:2; }
+  .phone .scr{ width:100%; height:100%; border-radius:14px; overflow:hidden; background:#FAF3E6; }
+  .phone img{ width:100%; height:100%; object-fit:cover; object-position:0 0; display:block; }
+
+  /* language strip */
+  .pair{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:36px; }
+  @media (max-width:640px){ .pair{ grid-template-columns:1fr; } }
+  .pair .dev .stage{ min-height:0; }
+
+  /* underneath panel */
+  .under{ background:var(--panel); color:#fff; border-radius:20px; padding:24px 22px 26px; }
+  @media (max-width:640px){ .under{ padding:20px 14px 20px; } }
+  .under small{ font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:.12em; color:var(--gold); }
+  .under h3{ margin:4px 0 18px; font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.7rem; line-height:1.15; }
+  .grid6{ display:grid; grid-template-columns:repeat(3,1fr); background:var(--panel-2); border:1px solid rgba(255,255,255,.08); border-radius:14px; overflow:hidden; }
+  @media (max-width:820px){ .grid6{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:520px){ .grid6{ grid-template-columns:1fr; } }
+  .cell{ padding:16px 16px 18px; border-right:1px solid rgba(255,255,255,.09); border-bottom:1px solid rgba(255,255,255,.09); }
+  .cell .n{ font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--gold); }
+  .cell h5{ margin:6px 0 6px; font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1rem; line-height:1.25; }
+  .cell p{ margin:0; font-size:0.78rem; line-height:1.55; color:#e0c9cd; }
+
+  .foot{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; margin-top:22px; }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chips span{ font-family:'IBM Plex Mono',monospace; font-size:0.7rem; padding:6px 13px; border:1px solid var(--line); border-radius:999px; background:var(--tint); color:#5B4046; }
+  .credit{ font-size:0.8rem; color:var(--muted); }
+  .credit b{ color:var(--ink); }
+
+  .actions{ margin-top:22px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  .actions a{ font-size:0.85rem; font-weight:600; text-decoration:none; padding:10px 18px; border-radius:8px; border:1.5px solid var(--ink); color:var(--ink); }
+  .actions a.solid{ background:var(--ink); color:#fff; }
+  @media print{ body{ background:#fff; padding:0; } .actions{ display:none; } .poster{ padding:0; } @page{ size:A4; margin:8mm; } }
+</style>
+</head>
+<body>
+<main class="poster">
+  <header class="head">
+    <div class="brand">
+      <img src="assets/srisubramaniar/logo.png" alt="Sri Subramaniar Alayam logo" width="44" height="44">
+      <div>
+        <h2>Sri Subramaniar Alayam <em>Case Study</em></h2>
+        <p>Lok Kawi, Kota Kinabalu, Sabah</p>
+      </div>
+    </div>
+    <div class="head-meta">srisubramaniarlokkawi.org<br>Prepared by Ravi</div>
+  </header>
+
+  <span class="pill">TEMPLE DIGITAL PLATFORM</span>
+  <h1>One build for the kiosk, the phone and the <em>web</em> &mdash; run by the committee.</h1>
+  <p class="lede">A trilingual platform for Sri Subramaniar Alayam &mdash; built once as a progressive web app, and running unmodified as a temple touch-screen kiosk, a tablet display, an installable phone app and a full website, with pooja registration that can never be double-booked.</p>
+
+  <div class="facts">
+    <div><small>SCREENS</small><b>Kiosk &middot; Tablet &middot; Mobile &middot; Web</b></div>
+    <div><small>LANGUAGES</small><b>English &middot; Bahasa Malaysia &middot; <span style="font-family:'Noto Sans Tamil',sans-serif">தமிழ்</span></b></div>
+    <div><small>BACKEND</small><b>Postgres database + serverless functions</b></div>
+    <div><small>CONTENT</small><b>Committee-run CMS</b></div>
+  </div>
+
+  <div class="two">
+    <div class="box">
+      <small>01 &middot; THE APP</small>
+      <h3>One build, every screen</h3>
+      <p>Touch-screen kiosk, tablet, installable phone app and full website &mdash; one responsive codebase, deployed everywhere at once.</p>
+    </div>
+    <div class="box gold">
+      <small>02 &middot; THE COMMITTEE CMS</small>
+      <h3>Run by the committee</h3>
+      <p>Password-protected admin pages let committee members edit every section and manage registrations themselves &mdash; no developer, no redeploy, live instantly.</p>
+    </div>
+  </div>
+
+  <h2 class="sec-title">The same app, every screen</h2>
+  <p class="sec-lede">No separate native builds and no duplicated content &mdash; one responsive PWA presents itself as a wide touch-screen kiosk in the temple, a tablet display, a compact app on a phone, and a full website on a desktop.</p>
+
+  <div class="devices">
+    <div class="dev kiosk">
+      <h4>Touch-screen Kiosk</h4><span class="tag">TEMPLE DISPLAY</span>
+      <div class="stage"><div class="monitor">
+        <div class="mon-frame"><div class="mon-bar"><i></i><i></i><i></i></div><div class="mon-screen"><img src="assets/srisubramaniar/home-kiosk.jpg" alt="Sri Subramaniar Alayam home screen in kiosk layout" loading="lazy"></div></div>
+        <div class="mon-neck"></div><div class="mon-base"></div>
+      </div></div>
+    </div>
+    <div class="dev">
+      <h4>Tablet</h4><span class="tag">SPLASH SCREEN</span>
+      <div class="stage"><div class="tablet" role="img" aria-label="Tablet splash screen with the temple emblem and an Enter button"><div class="scr"><img src="assets/srisubramaniar/splash-tablet.jpg" alt="" loading="lazy"></div></div></div>
+    </div>
+    <div class="dev">
+      <h4>Mobile</h4><span class="tag">INSTALLABLE APP</span>
+      <div class="stage"><div class="phone" role="img" aria-label="Mobile home screen"><div class="scr"><img src="assets/srisubramaniar/home-phone.jpg" alt="" loading="lazy"></div></div></div>
+    </div>
+    <div class="dev web">
+      <h4>Web</h4><span class="tag">FULL TEMPLE SITE</span>
+      <div class="stage"><div class="monitor">
+        <div class="mon-frame"><div class="mon-bar"><i></i><i></i><i></i></div><div class="mon-screen"><img src="assets/srisubramaniar/home-desktop.jpg" alt="Sri Subramaniar Alayam website on a desktop" loading="lazy"></div></div>
+        <div class="mon-neck"></div><div class="mon-base"></div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div class="dev kiosk">
+      <h4>In three languages</h4><span class="tag">EN &middot; BM &middot; TAMIL</span>
+      <div class="stage"><div class="monitor"><div class="mon-frame"><div class="mon-bar"><i></i><i></i><i></i></div><div class="mon-screen"><img src="assets/srisubramaniar/home-tamil.jpg" alt="Home screen switched to Tamil" loading="lazy"></div></div></div></div>
+    </div>
+    <div class="dev kiosk">
+      <h4>Editable by the committee</h4><span class="tag">DEITIES &middot; PHOTOS FROM THE CMS</span>
+      <div class="stage"><div class="monitor"><div class="mon-frame"><div class="mon-bar"><i></i><i></i><i></i></div><div class="mon-screen"><img src="assets/srisubramaniar/deities-kiosk.jpg" alt="Deities screen with temple shrine photographs" loading="lazy"></div></div></div></div>
+    </div>
+  </div>
+  <div style="height:22px"></div>
+
+  <section class="under" aria-labelledby="under-h">
+    <small>WHAT'S RUNNING UNDERNEATH</small>
+    <h3 id="under-h">Not just a pretty front end</h3>
+    <div class="grid6">
+      <div class="cell"><div class="n">01</div><h5>Registration that can't double-book</h5><p>Ubayakarar, Annathanam and Participant slots are claimed in a Postgres database that locks the slot, so two devotees can't both win the same one &mdash; even in the same second.</p></div>
+      <div class="cell"><div class="n">02</div><h5>Committee CMS, individual logins</h5><p>More than fifteen sections editable from the browser. Each member has their own login, with separate access for Content and for Prayers &amp; Bookings.</p></div>
+      <div class="cell"><div class="n">03</div><h5>Trilingual by design</h5><p>English, Bahasa Malaysia and Tamil across pages, menus and even committee names, switchable instantly without a page reload.</p></div>
+      <div class="cell"><div class="n">04</div><h5>Privacy-first membership lookup</h5><p>Devotees check their status by membership number. Only the matched record is returned, and the NRIC is never sent to the public page.</p></div>
+      <div class="cell"><div class="n">05</div><h5>Notifications &amp; WhatsApp chat</h5><p>Devotees opt in with the bell icon and the committee sends to every subscribed device from the CMS. A WhatsApp &ldquo;Chat with Us&rdquo; card, welcome popup and notice ticker switch on and off the same way.</p></div>
+      <div class="cell"><div class="n">06</div><h5>Installable, offline-friendly</h5><p>Add it to a phone's home screen, run it full-screen on a temple display that resets itself after inactivity, and keep browsing offline after the first visit. Live on its own domain with SSL.</p></div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <div class="chips"><span>HTML / CSS / JS (PWA)</span><span>Postgres (Supabase)</span><span>Serverless Functions</span><span>Git CI/CD</span></div>
+    <div class="credit">Live at <b>srisubramaniarlokkawi.org</b> &middot; case study prepared by <b>Ravi</b></div>
+  </div>
+
+  <div class="actions">
+    <a class="solid" href="srisubramaniar-case-study.html">Read the full case study</a>
+    <a href="index.html#work">Back to Click 4 Tech</a>
+  </div>
+</main>
+</body>
+</html>
