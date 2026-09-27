@@ -37,6 +37,12 @@
       title: 'CY Wong Green Energy Case Study',
       caseStudy: 'cywong-case-study.html',
       poster: 'cywong-poster.html'
+    },
+    {
+      match: /dharma|dharmalingam/i,
+      title: 'Dharma Ortho Case Study',
+      caseStudy: 'dharmaortho-case-study.html',
+      poster: 'dharmaortho-poster.html'
     }
   ];
 
