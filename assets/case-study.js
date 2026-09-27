@@ -25,6 +25,12 @@
       title: 'Sri Subramaniar Alayam Case Study',
       caseStudy: 'srisubramaniar-case-study.html',
       poster: 'srisubramaniar-poster.html'
+    },
+    {
+      match: /begas/i,
+      title: 'Begas Energy Case Study',
+      caseStudy: 'begasenergy-case-study.html',
+      poster: 'begasenergy-poster.html'
     }
   ];
 

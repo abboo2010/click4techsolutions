@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Begas Energy Case Study | Click 4 Tech Solutions</title>
+<meta name="description" content="Begas Energy Sdn Bhd: a corporate site for an oil and gas maintenance contractor, on its own dedicated VPS with business email kept fully under the company's control. Built by Click 4 Tech Solutions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#161C26; --ink-soft:#3E4A5B; --muted:#6B7684;
+    --paper:#FCFCFA; --red:#D0342C; --red-tint:#FBE6E4; --steel-tint:#EEF1F4;
+    --line:rgba(22,28,38,0.14);
+  }
+  *{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{ margin:0; background:#EAEAE6; color:var(--ink); font-family:'IBM Plex Sans',system-ui,sans-serif; font-size:15px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  .sheet{ max-width:860px; margin:0 auto; background:var(--paper); padding:40px 44px 56px; }
+  @media (min-width:900px){ body{ padding:28px 0; } }
+  @media (max-width:640px){ .sheet{ padding:24px 18px 40px; } }
+
+  .head{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:16px; border-bottom:3px solid var(--ink); }
+  .brand{ display:flex; align-items:center; gap:12px; min-width:0; }
+  .brand img{ width:44px; height:auto; flex:none; }
+  .brand b{ font-family:'Fraunces',Georgia,serif; font-size:1.1rem; font-weight:600; }
+  .brand b i{ font-style:normal; color:var(--red); }
+  .head-meta{ font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--muted); text-align:right; line-height:1.5; }
+  @media (max-width:520px){ .head-meta{ display:none; } }
+
+  .pill{ display:inline-block; margin-top:28px; background:var(--ink); color:#fff; font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:.14em; padding:7px 16px; border-radius:999px; }
+  h1{ font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:clamp(1.8rem,5vw,2.5rem); line-height:1.1; margin:14px 0 10px; }
+  .lede{ color:var(--muted); font-size:1.02rem; max-width:36em; margin:0 0 14px; }
+  .by{ font-size:0.78rem; color:var(--muted); display:flex; flex-wrap:wrap; gap:6px 26px; margin-bottom:6px; }
+  .by b{ color:var(--ink); font-weight:600; }
+
+  h2{ font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.35rem; margin:34px 0 10px; }
+  p{ margin:0 0 12px; }
+  p strong{ font-weight:600; }
+  code{ font-family:'IBM Plex Mono',monospace; font-size:0.88em; background:rgba(22,28,38,0.06); padding:1px 5px; border-radius:4px; }
+
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:14px 0 6px; }
+  @media (max-width:640px){ .two{ grid-template-columns:1fr; } }
+  .box{ border:1px solid var(--line); border-radius:10px; padding:16px 18px; background:var(--steel-tint); }
+  .box.red{ background:var(--red-tint); border-color:rgba(208,52,44,0.5); }
+  .box small{ display:block; font-family:'IBM Plex Mono',monospace; font-size:0.66rem; letter-spacing:.12em; color:var(--muted); margin-bottom:6px; }
+  .box h3{ font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.08rem; margin:0 0 6px; }
+  .box p{ margin:0; font-size:0.85rem; color:var(--ink-soft); line-height:1.55; }
+
+  figure{ margin:18px 0 6px; }
+  figure img{ display:block; width:100%; height:auto; border-radius:10px; border:1px solid var(--line); box-shadow:0 14px 30px -20px rgba(22,28,38,.5); }
+  figcaption{ margin-top:8px; font-size:0.78rem; color:var(--muted); text-align:center; }
+
+  ul{ margin:8px 0 14px; padding-left:22px; }
+  li{ margin-bottom:4px; }
+
+  .stack{ display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+  .stack span{ font-family:'IBM Plex Mono',monospace; font-size:0.72rem; padding:6px 13px; border:1px solid var(--line); border-radius:999px; background:var(--steel-tint); color:var(--ink-soft); }
+
+  .foot{ margin-top:34px; padding-top:16px; border-top:1px solid var(--line); text-align:center; font-size:0.8rem; font-style:italic; color:var(--muted); }
+  .actions{ margin-top:22px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  .actions a{ font-size:0.85rem; font-weight:600; text-decoration:none; padding:10px 18px; border-radius:8px; border:1.5px solid var(--ink); color:var(--ink); }
+  .actions a.solid{ background:var(--ink); color:#fff; }
+  .actions a:hover{ opacity:.85; }
+  @media print{ body{ background:#fff; padding:0; } .actions{ display:none; } .sheet{ padding:0; } }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header class="head">
+    <div class="brand">
+      <img src="assets/begasenergy/logo.png" alt="Begas Energy Sdn Bhd logo" width="44">
+      <b>Begas Energy <i>&middot;</i> Case Study</b>
+    </div>
+    <div class="head-meta">begasenergy.com<br>Prepared by Ravi</div>
+  </header>
+
+  <span class="pill">CORPORATE WEB PRESENCE</span>
+  <h1>Begas Energy: A Corporate Site Backed by Its Own Server</h1>
+  <p class="lede">A public-facing website for an oil and gas maintenance contractor in Kota Kinabalu, hosted on its own dedicated VPS rather than shared hosting, so the company's business email stays fast, reliable and fully under its own control.</p>
+  <div class="by"><span>Live at <b>begasenergy.com</b></span><span>Prepared by <b>Ravi</b></span></div>
+
+  <figure>
+    <img src="assets/begasenergy/home-slide1.jpg" alt="Begas Energy home page, showing the site header with social media icons and a language selector" width="726" height="700" loading="lazy">
+    <figcaption>The home page, with the header's social links and language selector.</figcaption>
+  </figure>
+
+  <h2>The brief</h2>
+  <p>Begas Energy Sdn Bhd is a Sabah-based Bumiputera engineering and construction company, providing Civil, Mechanical and Electrical maintenance services to Oil and Gas majors across upstream and downstream operations. A company operating in that industry is judged in part by how it presents itself to the operators and majors it tenders to &mdash; the brief was a site that reads as established and credible, backed by infrastructure the company controls outright rather than a shared hosting account.</p>
+
+  <h2>Two deliverables in one project</h2>
+  <div class="two">
+    <div class="box">
+      <small>01 &middot; THE SITE</small>
+      <h3>A corporate presence</h3>
+      <p>Company profile, leadership, the full range of services, and a team page introducing the people behind the work &mdash; in English, with a built-in translator for other languages.</p>
+    </div>
+    <div class="box red">
+      <small>02 &middot; THE INFRASTRUCTURE</small>
+      <h3>Its own dedicated VPS</h3>
+      <p>Not shared hosting &mdash; a server the company doesn't share with anyone else, so business email keeps working reliably whatever else is happening on a shared host.</p>
+    </div>
+  </div>
+
+  <h2>What the site covers</h2>
+  <p><strong>Company profile.</strong> Begas Energy's background, incorporation and leadership are set out on the home page, alongside the full range of services the company offers to Oil and Gas operators: HVAC operation and maintenance, ducting fabrication and cleaning, valve maintenance, electrical switchboard fabrication and commissioning, PLC troubleshooting, civil and structural repair, VSAT data transmission maintenance, pipeline rehabilitation, and general building maintenance and manpower supply.</p>
+  <p><strong>A named team.</strong> A dedicated Our Team page introduces the company by name and role &mdash; from the Managing Director and Operation Manager through to Contract, Procurement, Accounts and QA/QC staff &mdash; each with their qualifications and years in the oil and gas industry, giving a prospective client real people to recognise rather than an anonymous company name.</p>
+  <p><strong>Social links built into the header.</strong> Facebook, X (Twitter), Instagram, YouTube and WhatsApp are linked directly from every page's header, alongside a one-click email link and a language selector, so a visitor can move straight from the site to the company's other channels or into a WhatsApp chat.</p>
+  <p><strong>Business email that keeps working.</strong> Because the site runs on its own VPS rather than a shared hosting account, the company's business email is not competing for resources with other websites on the same server &mdash; it stays fast and reliable, and is fully under the company's own control rather than a shared provider's.</p>
+  <p><strong>A real production deployment.</strong> The site is live on the company's own domain (begasenergy.com), with a full company address, telephone and fax numbers, and a general enquiry email in the footer.</p>
+
+  <figure>
+    <img src="assets/begasenergy/home-slide2.jpg" alt="A second home page slide, describing Electrical Engineering & Maintenance and Electrical Construction Work services" width="726" height="700" loading="lazy">
+    <figcaption>One of the home page's rotating service highlights.</figcaption>
+  </figure>
+
+  <h2>Why a dedicated VPS</h2>
+  <p>Shared hosting puts a company's website and email on the same server as many other, unrelated sites &mdash; if one of them is misconfigured, gets flagged as a spam source, or simply drives heavy traffic, every site on that server can be affected, business email included. A dedicated VPS gives Begas Energy a server that answers to no one else's traffic or mistakes, which matters most for the one thing a company can least afford to have go down: the email address its clients and tenders reach it on.</p>
+
+  <h2>Tech stack</h2>
+  <div class="stack">
+    <span>Content-managed corporate website</span>
+    <span>Dedicated VPS hosting</span>
+    <span>Business email on the company's own server</span>
+    <span>Built-in multi-language translation widget</span>
+  </div>
+
+  <div class="foot">This case study accompanies a one-page visual poster of the same project.</div>
+  <div class="actions">
+    <a class="solid" href="begasenergy-poster.html" target="_blank" rel="noopener">View the poster</a>
+    <a href="index.html#work" target="_top">Back to Click 4 Tech</a>
+  </div>
+</main>
+</body>
+</html>
