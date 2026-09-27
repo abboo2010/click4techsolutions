@@ -49,6 +49,12 @@
       title: 'Asia Track Case Study',
       caseStudy: 'asiatrack-case-study.html',
       poster: 'asiatrack-poster.html'
+    },
+    {
+      match: /colorectal|ratha\s*krishnan|gleneagles/i,
+      title: 'Colorectal Surgery Sabah Case Study',
+      caseStudy: 'colorectalsurgerysabah-case-study.html',
+      poster: 'colorectalsurgerysabah-poster.html'
     }
   ];
 
