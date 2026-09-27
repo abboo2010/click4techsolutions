@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CY Wong Green Energy Poster | Click 4 Tech Solutions</title>
+<meta name="description" content="CY Wong Green Energy Sdn Bhd: a 4-language recycling-business website with a real online collection-request form, backed by a managed Facebook page. Built by Click 4 Tech Solutions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C3320; --muted:#67756B; --paper:#FCFCFA;
+    --gold:#B4922F; --gold-deep:#8C7124;
+    --panel:#1C3320; --panel-2:#2A462F;
+    --line:rgba(28,51,32,0.16); --tint:#EAF1E5;
+  }
+  *{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{ margin:0; background:#EAEAE1; color:var(--ink); font-family:'IBM Plex Sans',system-ui,sans-serif; font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .poster{ max-width:900px; margin:0 auto; background:var(--paper); padding:36px 40px 34px; }
+  @media (min-width:940px){ body{ padding:28px 0; } }
+  @media (max-width:640px){ .poster{ padding:22px 16px 28px; } }
+
+  .head{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:18px; border-bottom:1px solid var(--line); }
+  .brand{ display:flex; align-items:center; gap:14px; min-width:0; }
+  .brand img{ width:44px; height:auto; flex:none; }
+  .brand h2{ margin:0; font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.2rem; line-height:1.2; }
+  .brand h2 em{ font-style:normal; color:var(--gold); }
+  .brand p{ margin:0; font-size:0.78rem; color:var(--muted); }
+  .head-meta{ font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--muted); text-align:right; line-height:1.5; }
+  @media (max-width:560px){ .head-meta{ display:none; } .brand p{ font-size:0.7rem; } }
+
+  .pill{ display:inline-flex; align-items:center; gap:9px; margin-top:26px; background:var(--ink); color:#fff; font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:.14em; padding:7px 16px; border-radius:999px; }
+  .pill::before{ content:""; width:7px; height:7px; border-radius:50%; background:var(--gold); }
+  h1{ font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:clamp(2rem,6vw,3rem); line-height:1.08; margin:16px 0 14px; max-width:13em; }
+  h1 em{ font-style:italic; }
+  .lede{ color:var(--muted); font-size:1rem; max-width:40em; margin:0 0 20px; }
+
+  .facts{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px 20px; margin-bottom:22px; }
+  @media (max-width:760px){ .facts{ grid-template-columns:1fr 1fr; } }
+  .facts small{ display:block; font-family:'IBM Plex Mono',monospace; font-size:0.66rem; letter-spacing:.1em; color:var(--muted); margin-bottom:2px; }
+  .facts b{ font-weight:600; font-size:0.84rem; line-height:1.4; display:block; }
+
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:34px; }
+  @media (max-width:640px){ .two{ grid-template-columns:1fr; } }
+  .box{ border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff; }
+  .box.gold{ background:var(--tint); border-color:var(--gold-deep); }
+  .box small{ display:block; font-family:'IBM Plex Mono',monospace; font-size:0.66rem; letter-spacing:.1em; color:var(--muted); margin-bottom:6px; }
+  .box.gold small{ color:var(--gold-deep); }
+  .box h3{ margin:0 0 6px; font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.1rem; }
+  .box p{ margin:0; font-size:0.82rem; color:var(--muted); line-height:1.55; }
+
+  .sec-title{ font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.7rem; margin:0 0 10px; line-height:1.2; }
+  .sec-lede{ color:var(--muted); max-width:44em; margin:0 0 20px; }
+
+  .devices{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:36px; }
+  @media (max-width:640px){ .devices{ grid-template-columns:1fr; } }
+  .dev{ border:1px solid var(--line); border-radius:14px; background:#fff; padding:12px 12px 16px; box-shadow:0 10px 26px -18px rgba(28,51,32,.4); }
+  .dev h4{ margin:0; font-size:0.82rem; font-weight:600; }
+  .dev .tag{ display:inline-block; margin:6px 0 12px; font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:.08em; padding:3px 9px; border-radius:999px; background:var(--tint); color:var(--muted); }
+  .browser{ border-radius:8px; overflow:hidden; border:1px solid var(--line); }
+  .browser-bar{ background:#DDE1D9; display:flex; align-items:center; gap:5px; padding:7px 9px; }
+  .browser-bar i{ width:8px; height:8px; border-radius:50%; background:#B4BEB2; display:block; }
+  .browser-shot{ max-height:340px; overflow:hidden; background:#1C3320; }
+  .browser-shot img{ width:100%; height:auto; display:block; }
+
+  .under{ background:var(--panel); color:#fff; border-radius:20px; padding:24px 22px 26px; }
+  @media (max-width:640px){ .under{ padding:20px 14px 20px; } }
+  .under small{ font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:.12em; color:#E4C669; }
+  .under h3{ margin:4px 0 18px; font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.7rem; line-height:1.15; }
+  .grid6{ display:grid; grid-template-columns:repeat(3,1fr); background:var(--panel-2); border:1px solid rgba(255,255,255,.08); border-radius:14px; overflow:hidden; }
+  @media (max-width:820px){ .grid6{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:520px){ .grid6{ grid-template-columns:1fr; } }
+  .cell{ padding:16px 16px 18px; border-right:1px solid rgba(255,255,255,.09); border-bottom:1px solid rgba(255,255,255,.09); }
+  .cell .n{ font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:#E4C669; }
+  .cell h5{ margin:6px 0 6px; font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1rem; line-height:1.25; }
+  .cell p{ margin:0; font-size:0.78rem; line-height:1.55; color:#c9d1c6; }
+
+  .foot{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; margin-top:22px; }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chips span{ font-family:'IBM Plex Mono',monospace; font-size:0.7rem; padding:6px 13px; border:1px solid var(--line); border-radius:999px; background:var(--tint); color:#3B5940; }
+  .credit{ font-size:0.8rem; color:var(--muted); }
+  .credit b{ color:var(--ink); }
+
+  .actions{ margin-top:22px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  .actions a{ font-size:0.85rem; font-weight:600; text-decoration:none; padding:10px 18px; border-radius:8px; border:1.5px solid var(--ink); color:var(--ink); }
+  .actions a.solid{ background:var(--ink); color:#fff; }
+  @media print{ body{ background:#fff; padding:0; } .actions{ display:none; } .poster{ padding:0; } @page{ size:A4; margin:8mm; } }
+</style>
+</head>
+<body>
+<main class="poster">
+  <header class="head">
+    <div class="brand">
+      <img src="assets/cywong/logo.png" alt="CY Wong Green Energy logo" width="44">
+      <div>
+        <h2>CY Wong Green Energy <em>Case Study</em></h2>
+        <p>Kota Kinabalu, Sabah</p>
+      </div>
+    </div>
+    <div class="head-meta">cywonggreenenergy.com<br>Prepared by Ravi</div>
+  </header>
+
+  <span class="pill">USED COOKING OIL RECYCLING</span>
+  <h1>A recycling business built for <em>convenience</em>, not just a page with a phone number.</h1>
+  <p class="lede">A multi-language website for CY Wong Green Energy Sdn Bhd, a Kota Kinabalu used-cooking-oil recycling company &mdash; with a real online form to schedule a pickup, backed by an actively managed Facebook page.</p>
+
+  <div class="facts">
+    <div><small>INDUSTRY</small><b>Used Cooking Oil Recycling</b></div>
+    <div><small>BASED IN</small><b>Kota Kinabalu, Sabah</b></div>
+    <div><small>LANGUAGES</small><b>EN / 简体中文 / 繁體中文 / BM</b></div>
+    <div><small>SOCIAL</small><b>Facebook (managed), WhatsApp</b></div>
+  </div>
+
+  <div class="two">
+    <div class="box">
+      <small>01 &middot; THE SITE</small>
+      <h3>An online collection request</h3>
+      <p>Property type, preferred date/time, address and postcode &mdash; a pickup booked straight from the site, no phone call needed.</p>
+    </div>
+    <div class="box gold">
+      <small>02 &middot; THE FACEBOOK PAGE</small>
+      <h3>An actively managed page</h3>
+      <p>4.8K followers and regular local-language posts &mdash; the one social channel Click 4 Tech manages for the business.</p>
+    </div>
+  </div>
+
+  <h2 class="sec-title">A booking form, not just a brochure</h2>
+  <p class="sec-lede">The header's WhatsApp and email links sit on every page, and the Request Collection page turns a call into a form filled out on the spot.</p>
+
+  <div class="devices">
+    <div class="dev">
+      <h4>Home &mdash; Hero</h4><span class="tag">RECYCLING PARTNER</span>
+      <div class="browser"><div class="browser-bar"><i></i><i></i><i></i></div><div class="browser-shot"><img src="assets/cywong/home-hero.jpg" alt="CY Wong Green Energy home page hero, showing the header and tagline Your Used Cooking Oil Recycling Partner" loading="lazy"></div></div>
+    </div>
+    <div class="dev">
+      <h4>Request Collection</h4><span class="tag">BOOKING FORM</span>
+      <div class="browser"><div class="browser-bar"><i></i><i></i><i></i></div><div class="browser-shot"><img src="assets/cywong/collection-form.jpg" alt="The Collection Request form, showing name, email, phone and property type fields" loading="lazy"></div></div>
+    </div>
+  </div>
+
+  <section class="under" aria-labelledby="under-h">
+    <small>WHAT'S RUNNING UNDERNEATH</small>
+    <h3 id="under-h">Not just a pretty front end</h3>
+    <div class="grid6">
+      <div class="cell"><div class="n">01</div><h5>A real booking form</h5><p>Property type, preferred date/time, address and postcode are collected directly online, ready to schedule a pickup.</p></div>
+      <div class="cell"><div class="n">02</div><h5>Four languages</h5><p>A site-wide selector switches between English, Simplified Chinese, Traditional Chinese and Bahasa Melayu.</p></div>
+      <div class="cell"><div class="n">03</div><h5>WhatsApp built in</h5><p>A click-to-chat header icon plus a sticky "Collection Request" banner follow the visitor down every page.</p></div>
+      <div class="cell"><div class="n">04</div><h5>A managed Facebook page</h5><p>4.8K followers, with regular Malay- and English-language posts across Sabah and Sarawak.</p></div>
+      <div class="cell"><div class="n">05</div><h5>UCO education built in</h5><p>A dedicated page explains where the oil goes &mdash; biodiesel, soaps and lubricants, animal feed, composting.</p></div>
+      <div class="cell"><div class="n">06</div><h5>Live in production</h5><p>Running on the company's own domain, cywonggreenenergy.com, with the full address and phone numbers in the footer.</p></div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <div class="chips"><span>Content-Managed Website</span><span>4-Language Site</span><span>Online Booking Form</span><span>Managed Facebook Page</span></div>
+    <div class="credit">Live at <b>cywonggreenenergy.com</b> &middot; case study prepared by <b>Ravi</b></div>
+  </div>
+
+  <div class="actions">
+    <a class="solid" href="cywong-case-study.html">Read the full case study</a>
+    <a href="index.html#work">Back to Click 4 Tech</a>
+  </div>
+</main>
+</body>
+</html>

@@ -31,6 +31,12 @@
       title: 'Begas Energy Case Study',
       caseStudy: 'begasenergy-case-study.html',
       poster: 'begasenergy-poster.html'
+    },
+    {
+      match: /cy\s*wong/i,
+      title: 'CY Wong Green Energy Case Study',
+      caseStudy: 'cywong-case-study.html',
+      poster: 'cywong-poster.html'
     }
   ];
 
