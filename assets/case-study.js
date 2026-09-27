@@ -43,6 +43,12 @@
       title: 'Dharma Ortho Case Study',
       caseStudy: 'dharmaortho-case-study.html',
       poster: 'dharmaortho-poster.html'
+    },
+    {
+      match: /asia\s*track/i,
+      title: 'Asia Track Case Study',
+      caseStudy: 'asiatrack-case-study.html',
+      poster: 'asiatrack-poster.html'
     }
   ];
 
