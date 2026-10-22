@@ -298,7 +298,7 @@
     var el = document.getElementById('toast');
     el.textContent = msg;
     el.className = 'toast show' + (isError ? ' error' : '');
-    setTimeout(function(){ el.classList.remove('show'); }, 2600);
+    setTimeout(function(){ el.classList.remove('show'); }, isError ? 2600 : 6000);
   }
 
   function fmtDate(iso){
@@ -534,7 +534,8 @@
     if (!res.ok) { toast(data.error || 'Failed to submit ticket', true); return; }
 
     resetNewTicketForm();
-    toast('Ticket submitted!');
+    var tn = data && (data.ticket_number || (data.ticket && data.ticket.ticket_number));
+toast('Thank you. Your support request' + (tn ? ' #' + tn : '') + ' has been received. Our team will review it and respond as soon as possible.');
     loadTickets();
   });
 
