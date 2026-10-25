@@ -9,3 +9,17 @@
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
+
+# ITCC Penampang shopping mall site, served at click4techsolutions.com/itcc
+# (the site itself lives in the separate itccmall Netlify project)
+[[redirects]]
+  from = "/itcc"
+  to = "/itcc/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/itcc/*"
+  to = "https://itccmall.netlify.app/:splat"
+  status = 200
+  force = true
