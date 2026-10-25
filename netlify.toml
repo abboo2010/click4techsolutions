@@ -14,8 +14,8 @@
 # (the site itself lives in the separate itccmall Netlify project)
 [[redirects]]
   from = "/itcc"
-  to = "/itcc/"
-  status = 301
+  to = "https://itccmall.netlify.app/"
+  status = 200
   force = true
 
 [[redirects]]
