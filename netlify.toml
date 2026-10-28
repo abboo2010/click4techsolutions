@@ -23,3 +23,17 @@
   to = "https://itccmall.netlify.app/:splat"
   status = 200
   force = true
+
+# Megalong Shopping Mall site, served at click4techsolutions.com/megalong
+# (the site itself lives in the separate megalongmall Netlify project)
+[[redirects]]
+  from = "/megalong"
+  to = "https://megalongmall.netlify.app/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/megalong/*"
+  to = "https://megalongmall.netlify.app/:splat"
+  status = 200
+  force = true
