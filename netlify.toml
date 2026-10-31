@@ -38,16 +38,16 @@
   status = 200
   force = true
 
-# Dr Prabu Rau neurosurgery clinic site, served at click4techsolutions.com/drprabhu
+# Dr Prabu Rau neurosurgery clinic site, served at click4techsolutions.com/drprabu
 # (the site itself lives in the separate drprabu Netlify project)
 [[redirects]]
-  from = "/drprabhu"
+  from = "/drprabu"
   to = "https://drprabu.netlify.app/"
   status = 200
   force = true
 
 [[redirects]]
-  from = "/drprabhu/*"
+  from = "/drprabu/*"
   to = "https://drprabu.netlify.app/:splat"
   status = 200
   force = true
