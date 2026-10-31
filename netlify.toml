@@ -37,3 +37,17 @@
   to = "https://megalongmall.netlify.app/:splat"
   status = 200
   force = true
+
+# Dr Prabu Rau neurosurgery clinic site, served at click4techsolutions.com/drprabhu
+# (the site itself lives in the separate drprabu Netlify project)
+[[redirects]]
+  from = "/drprabhu"
+  to = "/drprabhu/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/drprabhu/*"
+  to = "https://drprabu.netlify.app/:splat"
+  status = 200
+  force = true
