@@ -1,11 +1,13 @@
-// Preview lock for click4techsolutions.com/itcc ONLY (the rest of this site is not affected): branded login page (username + password).
-// Credentials live in Netlify environment variables, never in the repo:
-//   SITE_USER      - the username
-//   SITE_PASSWORD  - the password
+// Preview lock for click4techsolutions.com/itcc ONLY (rest of the site unaffected): branded login page (username + password). No Netlify settings needed.
 // A correct login sets a signed, HttpOnly cookie that lasts 7 days.
-// To REMOVE the lock when ITCC approves: delete this file and push. Use the SAME SITE_USER / SITE_PASSWORD values as the itccmall Netlify site.
-// (If the variables are missing the site stays locked - it never opens by mistake.)
+// This is a gate to keep casual visitors out of a preview; it is not bank-grade security.
+// To REMOVE the lock when ITCC approves: delete this file and push.
 
+const USER = "abboo"; // username (not case-sensitive)
+// Password is NOT stored here - only a salted PBKDF2-SHA256 hash of it.
+const SALT = "c26dbbd0c770243a177728dd04dd7719";
+const HASH = "f1ff0cf9087fb40cc658acdec10f86f99c6717992fe2022f0b08f0bd171b409d";
+const ITER = 150000;
 const COOKIE = "itcc_preview";
 const MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 const enc = new TextEncoder();
@@ -50,6 +52,13 @@ async function hasValidSession(request, user, pass) {
   if (!/^\d+$/.test(expires) || Number(expires) < Math.floor(Date.now() / 1000)) return false;
   const expected = await sign(user + ":" + pass, "itcc-preview|" + expires);
   return safeEqual(value.slice(dot + 1), expected);
+}
+
+async function checkPassword(p) {
+  const key = await crypto.subtle.importKey("raw", enc.encode(p), "PBKDF2", false, ["deriveBits"]);
+  const salt = Uint8Array.from(SALT.match(/../g).map((h) => parseInt(h, 16)));
+  const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", salt, iterations: ITER, hash: "SHA-256" }, key, 256);
+  return safeEqual(hex(bits), HASH);
 }
 
 function loginPage(message) {
@@ -123,15 +132,8 @@ const PAGE_HEADERS = {
 };
 
 export default async (request, context) => {
-  const user = Netlify.env.get("SITE_USER");
-  const pass = Netlify.env.get("SITE_PASSWORD");
-
-  // Fail closed: if the variables are missing, nobody gets in.
-  if (!user || !pass) {
-    return new Response(loginPage("This preview is locked (login not configured yet)."), {
-      status: 503, headers: PAGE_HEADERS,
-    });
-  }
+  const user = USER;
+  const pass = HASH; // only used as the cookie-signing key
 
   // Already signed in
   if (await hasValidSession(request, user, pass)) return context.next();
@@ -142,8 +144,8 @@ export default async (request, context) => {
     try { form = await request.formData(); } catch (_) { form = null; }
     const u = form ? String(form.get("username") || "") : "";
     const p = form ? String(form.get("password") || "") : "";
-    const okUser = await safeEqual(u.trim(), user);
-    const okPass = await safeEqual(p, pass);
+    const okUser = await safeEqual(u.trim().toLowerCase(), user);
+    const okPass = await checkPassword(p);
 
     if (okUser && okPass) {
       const expires = Math.floor(Date.now() / 1000) + MAX_AGE;
